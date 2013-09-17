@@ -9,7 +9,6 @@
 #define DEFAULT_BIT_DEPTH -1
 #define DEFAULT_CHANNELS -1
 #define DEFAULT_SAMPLE_RATE -1
-#define DEFAULT_SAMPLE_SIZE 8;
 
 #define return_if_not_OK(X) if(X!=OK) return X;
 #define return_if_falsey(X) if(!X) return X;
@@ -56,7 +55,6 @@ typedef struct {
 	int sample_rate;
 	file_type type;
 	sample_node *sample_data_head;
-	int sample_size;
 } sound_file;
 
 
@@ -67,7 +65,6 @@ sound_file *create_empty_sound_file_data(){
 		sound_data->bit_depth = DEFAULT_BIT_DEPTH;
 		sound_data->channels = DEFAULT_CHANNELS;
 		sound_data->sample_rate = DEFAULT_SAMPLE_RATE;
-		sound_data->sample_size = DEFAULT_SAMPLE_SIZE;
 		sound_data->type = UNRECOGNIZED;
 		return sound_data;
 	}
@@ -159,19 +156,6 @@ int find_string_and_ensure_following_whitespace(FILE *in, char *find){
 	else{
 		return result;
 	}
-	//int c;
-	//while((c = fgetc(in)) != EOF && c == *(find++)){
-	//}
-	//ungetc(c, in);
-	//if((*find)=='\0' && isspace(c)){
-	//	return OK;
-	//}
-	//else if (c==EOF){
-	//	return UNEXPECTED_EOF;
-	//}
-	//else {
-	//	return 0;
-	//}
 }
 
 int consume_whitespace(FILE *in){
@@ -400,12 +384,68 @@ int get_four_byte_string(FILE *in, char *storage){
 	}
 }
 
-int attempt_read_aiff_chunk(FILE *in, sound_file *data){
+int get_int_from_memory(char *mem, void *dest, int size){
+	memcpy(dest, mem, size);
+	flip_endian((char*)dest, size);
+}
+int flip_endian(char *dest, int size){
+	char* temp = (char*)malloc(size);
+	int i;
+	memcpy(temp, dest, size);
+	for(i = 0; i < size; i++){
+		*(dest + i) = *(temp+size-1-i);
+	}
+
+	free(temp);
+}
+int process_comm_chunk(char* chunk, sound_file *data){
+	short int num_channels;
+	unsigned int num_samples;
+	short int sample_size;
+	long double sample_rate;
+	get_int_from_memory(chunk, &num_channels, 2);
+	chunk+=2;
+	get_int_from_memory(chunk, &num_samples, 4);
+	chunk+=4;
+	get_int_from_memory(chunk, &sample_size, 2);
+	chunk+=2;
+	memcpy(&sample_rate, chunk, 8);
+	chunk+=10;
+	data->bit_depth=sample_size;
+	data->channels=num_channels;
+	data->samples=num_samples;
+	data->sample_rate=sample_rate;
+
+	//printf("%d\n", sizeof(long double));
+	//printf("Channels: %hu\n", num_channels);
+	//printf("Samples: %u\n", num_samples);
+	//printf("Sample Size: %hi\n", sample_size);
+	//printf("Sample Rate: %lf\n", sample_rate);
+}
+
+int process_ssnd_chunk(char *chunk, sound_file *data){
+
+}
+
+int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
+	if(strcmp(id, "COMM")==0){
+		process_comm_chunk(chunk, data);
+	}
+	else if(strcmp(id, "SSND")){
+		process_ssnd_chunk(chunk, data);
+	}
+	else{
+	/*do nothing*/
+	}
+}
+
+int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_remaining){
 	char id[5];
 	unsigned int chunk_size;
 	unsigned int total_chunk_size;
-	int result = get_four_byte_string(in, id);
 	char *temp;
+	int content_block_size;
+	int result = get_four_byte_string(in, id);
 	return_if_not_OK(result);
 	result = get_unsigned_four_byte_int(in, &chunk_size);
 	return_if_not_OK(result);
@@ -415,16 +455,18 @@ int attempt_read_aiff_chunk(FILE *in, sound_file *data){
 		total_chunk_size+=1;
 	}
 	
-	temp = (char*)malloc(total_chunk_size-8);
-	fread(temp, 1, total_chunk_size-8, in);
-
-	printf("%s %d\n", id, chunk_size);
+	content_block_size = total_chunk_size - 8;
+	temp = (char*)malloc(content_block_size);
+	fread(temp, 1, content_block_size, in);
+	read_aiff_chunk(id, temp, chunk_size, data);
+	free(temp);
+	*(bytes_remaining) -= total_chunk_size;
 	return OK;
 }
 
 int read_aiff_chunks(FILE *in, sound_file *data, unsigned int *bytes_remaining){
 	while(*bytes_remaining > 0){/*Super high chance this fails*/
-		int result = attempt_read_aiff_chunk(in, data);
+		int result = attempt_read_aiff_chunk(in, data, bytes_remaining);
 		return_if_not_OK(result);
 	}
 	return OK;
@@ -439,6 +481,7 @@ int read_aiff_file(FILE* in, sound_file *data){
 	result = get_unsigned_four_byte_int(in, &bytes_remaining);
 	return_if_not_OK(result);
 	result = find_string_and_get_following(in, "AIFF", &temp);
+	bytes_remaining-=4;
 	return_if_not_OK(result);
 	result = read_aiff_chunks(in, data, &bytes_remaining);
 	return_if_not_OK(result);
@@ -476,13 +519,14 @@ void format_output(sound_file *file_data, char* file_name){
 	printf("Duration: %s\n", get_sound_duration_string(file_data));
 	printf("------------------------------------------------------------\n");
 }
+
 int main(int argc, char* argv[]){
 	int result = 0;
 	FILE *in;
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
 	sound_file *file_data = create_empty_sound_file_data(); 
 	if(DEBUG){
-		strcpy(file_name, "hello.aiff");
+		strcpy(file_name, "zep.aiff");
 	}
 
 	in = fopen(file_name, "rb");
