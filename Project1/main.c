@@ -822,6 +822,7 @@ int main(int argc, char* argv[]){
 		fclose(in);
 	}
 	else{
+		printf("Unable to open file\n");
 	}
 
 	if(result == OK){
