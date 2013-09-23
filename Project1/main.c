@@ -9,6 +9,7 @@
 #define DEFAULT_BIT_DEPTH -1
 #define DEFAULT_CHANNELS -1
 #define DEFAULT_SAMPLE_RATE -1
+#define SAMPLE_RATE_SIZE 8
 
 #define return_if_not_OK(X) if(X!=OK) return X;
 #define return_if_falsey(X) if(!X) return X;
@@ -26,12 +27,13 @@ typedef enum {
 	INVALID_HEADER_IDENTIFIER,
 	ENCOUNTERED_START_DATA,
 	INVALID_HEADER_VALUE,
+	UNABLE_TO_ALLOCATE_MEMORY,
 } error_code;
 
 const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",
 	"Encountered invalid header identifier or beginning of sample data without proper specifier", "Not an error, encountered the beginning of start data",
-	"Invalid header value or unexpected end of file"};
+	"Invalid header value or unexpected end of file", "Unable to allocate more memory"};
 
 
 typedef enum {
@@ -41,7 +43,7 @@ typedef enum {
 } file_type;
 
 typedef int sound_reading;
-
+typedef long double sample_rate;
 
 typedef struct sample_node {
 	sound_reading *channel_data;
@@ -52,7 +54,7 @@ typedef struct {
 	int channels;
 	int samples;
 	int bit_depth;
-	int sample_rate;
+	sample_rate sample_rate;
 	file_type type;
 	sample_node *sample_data_head;
 } sound_file;
@@ -123,9 +125,14 @@ file_type get_file_type(FILE *in){
 char *get_sound_duration_string(sound_file *data){
 	char *result = (char*)malloc(sizeof(char) * 20);
 	int samples = data->samples;
-	int sample_rate = data->sample_rate;
-	int total_seconds = samples / sample_rate;
-	sprintf(result, "%01d:%0d:%05.2f", total_seconds/3600, (total_seconds%3600)/60, 1.0*samples/sample_rate-samples/sample_rate);
+	sample_rate sample_rate = data->sample_rate;
+	int total_seconds;
+	if(sample_rate == 0){
+		strcpy(result, "ERROR");
+		return;
+	}
+	total_seconds = samples / sample_rate;
+	sprintf(result, "%01d:%0d:%05.2f", total_seconds/3600, (total_seconds%3600)/60, samples/sample_rate - (total_seconds%60));
 
 	return result;
 }
@@ -402,15 +409,18 @@ int process_comm_chunk(char* chunk, sound_file *data){
 	short int num_channels;
 	unsigned int num_samples;
 	short int sample_size;
-	long double sample_rate;
+	sample_rate sample_rate;
 	get_int_from_memory(chunk, &num_channels, 2);
 	chunk+=2;
 	get_int_from_memory(chunk, &num_samples, 4);
 	chunk+=4;
 	get_int_from_memory(chunk, &sample_size, 2);
 	chunk+=2;
-	memcpy(&sample_rate, chunk, 8);
+
+	memcpy(&sample_rate, chunk, SAMPLE_RATE_SIZE);
 	chunk+=10;
+	flip_endian((char*) &sample_rate, SAMPLE_RATE_SIZE);
+	
 	data->bit_depth=sample_size;
 	data->channels=num_channels;
 	data->samples=num_samples;
@@ -423,16 +433,93 @@ int process_comm_chunk(char* chunk, sound_file *data){
 	//printf("Sample Rate: %lf\n", sample_rate);
 }
 
-int process_ssnd_chunk(char *chunk, sound_file *data){
+int get_next_sample_from_aiff(sound_file *data, char *chunk, sample_node **new_node_return){
+	sample_node *node = create_sample_node(data->channels);
+	sound_reading *cur_sample_value;
+	int i;
 
+	if(!node)
+		return UNABLE_TO_ALLOCATE_MEMORY;
+
+	cur_sample_value = node->channel_data;
+
+	for(i = 0; i < data->channels; i++){
+		switch(data->bit_depth){
+		case 8:
+			{
+				char result;
+				get_int_from_memory(chunk, &result, 1);
+				chunk+=1;
+				*cur_sample_value = (sound_reading) result;
+			}
+			break;
+		case 16:
+			{
+				short result;
+				get_int_from_memory(chunk, &result, 2);
+				chunk+=2;
+				*cur_sample_value = (sound_reading) result;
+			}
+			break;
+		case 32:
+			{
+				int result;
+				get_int_from_memory(chunk, &result, 4);
+				chunk+=4;
+				*cur_sample_value = (sound_reading) result;
+			}
+			break;
+		default:
+			return INVALID_BIT_DEPTH;
+			break;
+		}
+	}
+
+	*new_node_return = node;
+	return OK;
+}
+
+int process_ssnd_chunk(char *chunk, sound_file *data, int size){
+	unsigned int offset = 0;
+	unsigned int block_size = 0;
+	unsigned int min_block_size = data->channels * data->bit_depth;
+	unsigned int actual_block_size = min_block_size;
+	int remaining_size = size;
+	sample_node *last_node = NULL;
+
+	get_int_from_memory(chunk, &offset, 4);
+	chunk += 4;/*bad system here...just don't ever foreget to increment..ever*/
+	get_int_from_memory(chunk, &block_size, 4);
+	chunk += 4;
+	chunk += offset;
+	remaining_size -= 8 + offset;/*Dont forget to update me if this section changes*/
+
+	if(block_size != 0 && actual_block_size % block_size != 0){
+		actual_block_size += block_size - actual_block_size % block_size;
+	}
+
+	/*at the beginning of the sample data*/
+	while(remaining_size > actual_block_size){
+		sample_node *next_node = NULL;
+		get_next_sample_from_aiff(data, chunk, &next_node);
+		if(last_node != NULL){
+			last_node->next = next_node;
+		}
+		else{
+			data->sample_data_head = next_node;
+		}
+		last_node = next_node;
+		chunk+=actual_block_size/8;
+		remaining_size-=actual_block_size;
+	}
 }
 
 int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
 	if(strcmp(id, "COMM")==0){
 		process_comm_chunk(chunk, data);
 	}
-	else if(strcmp(id, "SSND")){
-		process_ssnd_chunk(chunk, data);
+	else if(strcmp(id, "SSND") == 0){
+		process_ssnd_chunk(chunk, data, chunk_size);
 	}
 	else{
 	/*do nothing*/
@@ -508,19 +595,152 @@ int get_sound_info(FILE* in, sound_file *data){
 	}
 }
 
-void format_output(sound_file *file_data, char* file_name){
-	printf("------------------------------------------------------------\n");
-	printf("Filename: %s\n", file_name);
-	printf("Format: %s\n", file_type_to_string(file_data->type));
-	printf("Sample Rate: %d\n", file_data->sample_rate);
-	printf("Bit Depth: %d\n", file_data->bit_depth);
-	printf("Channels: %d\n", file_data->channels);
-	printf("Samples: %d\n", file_data->samples);
-	printf("Duration: %s\n", get_sound_duration_string(file_data));
-	printf("------------------------------------------------------------\n");
+int write_229_pre_header(FILE *out){
+	fprintf(out, "CS229\n\n# This file generated by sound file conversion utility sndconv\n");
 }
 
-int main(int argc, char* argv[]){
+int write_229_header(FILE *out, sound_file *data){
+	fprintf(out, "SampleRate %d\n", data->sample_rate);
+	fprintf(out, "Samples    %d\n", data->samples);
+	fprintf(out, "Channels   %d\n", data->channels);
+	fprintf(out, "BitDepth   %d\n", data->bit_depth);
+	fprintf(out, "StartData\n");
+}
+
+int write_229_sound_data(FILE *out, sound_file *data){
+	sample_node *cur = data->sample_data_head;
+	while(cur){
+		int i;
+		for(i = 0; i < data->channels; i++){
+			fprintf(out, "%d ", cur->channel_data + i);
+		}
+		printf("\n");
+		cur=cur->next;
+	}
+}
+
+int write_aiff_pre_header(FILE *out){
+	fprintf(out, "FORM");
+}
+
+
+unsigned int get_aiff_comm_chunk_size(sound_file *data){
+	return 26;
+}
+
+unsigned int get_aiff_ssnd_chunk_size(sound_file *data){
+	return 16 + data->samples * data->bit_depth/8;
+}
+
+
+unsigned int get_aiff_file_size(sound_file *data){
+	unsigned int result = 0;
+	result += 4;
+	result += 4;
+	result += 4;
+	result += get_aiff_comm_chunk_size(data);
+	result += get_aiff_ssnd_chunk_size(data);
+
+	return result;
+}
+
+int write_number_to_aiff(void *what, size_t size, FILE *out){
+	void *temp = malloc(size);
+	if(!temp) return UNABLE_TO_ALLOCATE_MEMORY;
+	
+	flip_endian((char*)temp, size);
+	fwrite(temp, size, 1, out);
+
+	free(temp);
+	return OK;
+}
+
+int write_aiff_file_size(FILE *out, sound_file *data){
+	unsigned int bytes_remaining = get_aiff_file_size(data) - 8;
+	write_number_to_aiff(&bytes_remaining, sizeof(bytes_remaining), out);
+	/*CHECK FOR ERROR*/
+}
+
+int write_aiff_post_header(FILE *out){
+	fprintf(out, "AIFF");
+}
+
+int write_comm_chunk(FILE *out, sound_file *data){
+	int remaining_comm_size = get_aiff_comm_chunk_size(data) - 8;
+	short int channels = data->channels;
+	unsigned int total_samples = data->samples;
+	short int sample_size = data->bit_depth;
+	sample_rate sample_rate = data->sample_rate;
+
+	fprintf(out, "COMM");
+	write_number_to_aiff(&remaining_comm_size, sizeof(remaining_comm_size), out);
+	write_number_to_aiff(&channels, sizeof(channels), out);
+	write_number_to_aiff(&total_samples, sizeof(total_samples), out);
+	write_number_to_aiff(&sample_size, sizeof(sample_size), out);
+	write_number_to_aiff(&sample_rate, sizeof(sample_rate), out);
+}
+
+int write_single_aiff_sample(sound_reading *what, sound_file *data, FILE *out){
+	switch(data->bit_depth){
+	case 8:
+		{
+			char result = (char) (*what);
+			write_number_to_aiff(&result, sizeof(result), out);
+		}
+		break;
+	case 16:
+		{
+			short result = (short) (*what);
+			write_number_to_aiff(&result, sizeof(result), out);
+		}
+		break;
+	case 32:
+		{
+			int result = (int) (*what);
+			write_number_to_aiff(&result, sizeof(result), out);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+int write_ssnd_chunk(FILE *out, sound_file *data){
+	int remaining_ssnd_size = get_aiff_ssnd_chunk_size(data) - 8;
+	unsigned int zero = 0;
+	sample_node *cur = data->sample_data_head;
+
+	fprintf(out, "SSND");
+	write_number_to_aiff(&remaining_ssnd_size, sizeof(remaining_ssnd_size), out);
+	write_number_to_aiff(&zero, sizeof(zero), out);/*Offset*/
+	write_number_to_aiff(&zero, sizeof(zero), out);/*Block size*/
+
+	
+	while(cur){
+		int i;
+		for(i = 0; i < data->channels; i++){
+			write_single_aiff_sample(cur->channel_data + i, data, out);
+		}
+		cur=cur->next;
+	}
+}
+
+
+int write_to_aiff(FILE* out, sound_file *data){
+	write_aiff_pre_header(out);
+	write_aiff_file_size(out, data);
+	write_aiff_post_header(out);
+	write_comm_chunk(out, data);
+	write_ssnd_chunk(out, data);
+}
+
+int write_to_cs229(FILE *out, sound_file *data){
+	write_229_pre_header(out);
+	write_229_header(out, data);
+	write_229_sound_data(out, data);
+}
+
+int sound_conv(){
 	int result = 0;
 	FILE *in;
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
@@ -532,10 +752,70 @@ int main(int argc, char* argv[]){
 	in = fopen(file_name, "rb");
 	if(in){
 		result = get_sound_info(in, file_data);
+		fclose(in);
 	}
 	else{
 	}
-	fclose(in);
+
+	if(result == OK){
+		if(file_data->type == CS229){
+			FILE *outf = fopen( strcat(file_name, ".aiff") , "w");
+			write_to_aiff(outf, file_data);
+		}
+		else if (file_data->type == AIFF){
+			FILE *outf = fopen( strcat(file_name, ".cs229") , "w");
+			write_to_cs229(outf, file_data);
+		}
+		else{
+
+		}
+	}
+	else{
+		printf("Error Code %d: %s\n", result, error_descriptions[result]);
+	}
+
+}
+
+void format_output(sound_file *file_data, char* file_name){
+	printf("------------------------------------------------------------\n");
+	printf("Filename: %s\n", file_name);
+	printf("Format: %s\n", file_type_to_string(file_data->type));
+	printf("Sample Rate: %g\n", file_data->sample_rate);
+	printf("Bit Depth: %d\n", file_data->bit_depth);
+	printf("Channels: %d\n", file_data->channels);
+	printf("Samples: %d\n", file_data->samples);
+	printf("Duration: %s\n", get_sound_duration_string(file_data));
+	printf("------------------------------------------------------------\n");
+	
+	if(DEBUG){
+		sample_node *cur = file_data->sample_data_head;
+		//while(cur){
+			int i;
+			for(i = 0; i < file_data->channels; i++){
+				printf("%hd ", cur->channel_data + i);
+			}
+			printf("\n");
+			cur=cur->next;
+		//}
+	}
+}
+
+int main(int argc, char* argv[]){
+	int result = 0;
+	FILE *in;
+	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
+	sound_file *file_data = create_empty_sound_file_data(); 
+	if(DEBUG){
+		strcpy(file_name, "hello.aiff");
+	}
+
+	in = fopen(file_name, "rb");
+	if(in){
+		result = get_sound_info(in, file_data);
+		fclose(in);
+	}
+	else{
+	}
 
 	if(result == OK){
 		format_output(file_data, file_name);
