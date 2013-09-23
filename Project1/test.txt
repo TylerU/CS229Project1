@@ -1,8 +1,0 @@
-CS229
-# Really short sound to illustrate this file format
-# We are doing something bizarre with the channels?
-Channels 3
-BitDepth 8
-SampleRate 3
-StartData
-1 2 3
