@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define WINDOWS 1
 
 #define DEFAULT_BUFFER_LENGTH 150
@@ -370,14 +370,9 @@ int read_cs229_file(FILE* in, sound_file *data){
 
 int get_unsigned_four_byte_int(FILE *in, unsigned int *place){
 	int size = 4;
-	char *temp = (char*)malloc(size);
 	char *dest = (char*)place;
-	int result = fread(temp, size, 1, in);
-	int i;
-	for(i = 0; i < size; i++){
-		*(dest + i) = *(temp+size-1-i);
-	}
-	free(temp);
+	int result = fread(dest, size, 1, in);
+	flip_endian(dest, size);
 	return result == 1 ? OK : UNEXPECTED_EOF;
 }
 
@@ -484,7 +479,7 @@ int get_next_sample_from_aiff(sound_file *data, char *chunk, sample_node **new_n
 int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 	unsigned int offset = 0;
 	unsigned int block_size = 0;
-	unsigned int min_block_size = data->channels * data->bit_depth;
+	unsigned int min_block_size = data->channels * data->bit_depth/8;
 	unsigned int actual_block_size = min_block_size;
 	int remaining_size = size;
 	sample_node *last_node = NULL;
@@ -511,7 +506,7 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 			data->sample_data_head = next_node;
 		}
 		last_node = next_node;
-		chunk+=actual_block_size/8;
+		chunk+=actual_block_size;
 		remaining_size-=actual_block_size;
 	}
 }
@@ -530,7 +525,7 @@ int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
 
 int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_remaining){
 	char id[5];
-	unsigned int chunk_size;
+	unsigned int chunk_size = 0;
 	unsigned int total_chunk_size;
 	char *temp;
 	int content_block_size;
@@ -808,7 +803,7 @@ int main(int argc, char* argv[]){
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
 	sound_file *file_data = create_empty_sound_file_data(); 
 	if(DEBUG){
-		strcpy(file_name, "./hello.cs229");
+		strcpy(file_name, "hello.aiff");
 	}
 	else{
 		printf("Enter the pathname of a sound file:\n");
@@ -816,7 +811,7 @@ int main(int argc, char* argv[]){
 		file_name[strlen(file_name)-1]=0;
 	}
 
-	in = fopen(file_name, "r");
+	in = fopen(file_name, "rb");
 	if(in){
 		result = get_sound_info(in, file_data);
 		fclose(in);
