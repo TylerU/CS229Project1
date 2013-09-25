@@ -77,7 +77,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.c" />
+    <ClCompile Include="shared.c" />
+    <ClCompile Include="sndconv.c" />
+    <ClCompile Include="sndinfo.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shared.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

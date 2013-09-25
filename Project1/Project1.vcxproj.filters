@@ -15,8 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
+    <ClCompile Include="shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sndconv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sndinfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shared.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

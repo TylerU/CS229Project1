@@ -1,59 +1,61 @@
-﻿Build started 9/23/2013 5:53:25 PM.
-     1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 9/24/2013 9:36:42 PM.
+     1>Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt main.c
-         main.c
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(133): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt sndinfo.c
+         sndinfo.c
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(133): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : see declaration of 'strcpy'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(134): warning C4033: 'get_sound_duration_string' must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(136): warning C4244: '=' : conversion from 'sample_rate' to 'int', possible loss of data
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(137): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(134): warning C4033: 'get_sound_duration_string' must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(136): warning C4244: '=' : conversion from 'sample_rate' to 'int', possible loss of data
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(137): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : see declaration of 'sprintf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(243): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(244): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(256): warning C4101: 'result' : unreferenced local variable
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(306): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(257): warning C4101: 'result' : unreferenced local variable
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(307): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(398): warning C4013: 'flip_endian' undefined; assuming extern returning int
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(504): warning C4018: '>' : signed/unsigned mismatch
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(751): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(376): warning C4013: 'flip_endian' undefined; assuming extern returning int
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(523): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(770): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : see declaration of 'strcpy'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(754): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(773): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(764): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(783): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(764): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(783): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : see declaration of 'strcat'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(768): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(787): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(811): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(830): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : see declaration of 'strcpy'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(819): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(838): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(140): warning C4715: 'get_sound_duration_string' : not all control paths return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(399): warning C4716: 'get_int_from_memory' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(409): warning C4716: 'flip_endian' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(436): warning C4716: 'process_comm_chunk' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(529): warning C4716: 'read_aiff_chunk' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(517): warning C4716: 'process_ssnd_chunk' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(602): warning C4716: 'write_229_pre_header' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(598): warning C4715: 'get_sound_info' : not all control paths return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(626): warning C4716: 'write_aiff_pre_header' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(610): warning C4716: 'write_229_header' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(622): warning C4716: 'write_229_sound_data' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(664): warning C4716: 'write_aiff_file_size' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(668): warning C4716: 'write_aiff_post_header' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(683): warning C4716: 'write_comm_chunk' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(708): warning C4716: 'write_single_aiff_sample' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(737): warning C4716: 'write_to_aiff' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(728): warning C4716: 'write_ssnd_chunk' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(743): warning C4716: 'write_to_cs229' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\main.c(779): warning C4716: 'sound_conv' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(140): warning C4715: 'get_sound_duration_string' : not all control paths return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(395): warning C4716: 'get_int_from_memory' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(405): warning C4716: 'flip_endian' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(548): warning C4716: 'read_aiff_chunk' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(536): warning C4716: 'process_ssnd_chunk' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(455): warning C4716: 'process_comm_chunk' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(617): warning C4715: 'get_sound_info' : not all control paths return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(621): warning C4716: 'write_229_pre_header' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(629): warning C4716: 'write_229_header' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(641): warning C4716: 'write_229_sound_data' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(645): warning C4716: 'write_aiff_pre_header' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(683): warning C4716: 'write_aiff_file_size' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(687): warning C4716: 'write_aiff_post_header' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(702): warning C4716: 'write_comm_chunk' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(727): warning C4716: 'write_single_aiff_sample' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(756): warning C4716: 'write_to_aiff' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(747): warning C4716: 'write_ssnd_chunk' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(762): warning C4716: 'write_to_cs229' : must return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(798): warning C4716: 'sound_conv' : must return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\main.obj
-         Project1.vcxproj -> C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.exe
-     1>Done Building Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\shared.obj
+         Debug\sndconv.obj
+         Debug\sndinfo.obj
+         Project1.vcxproj -> C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.exe
+     1>Done Building Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Project1\Project1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.39
+Time Elapsed 00:00:00.37
