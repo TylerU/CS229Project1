@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define DEBUG 0
-#define WINDOWS 1
+#define WINDOWS 0
 
 #define DEFAULT_BUFFER_LENGTH 150
 #define DEFAULT_SAMPLES -1
@@ -134,7 +134,7 @@ char *get_sound_duration_string(sound_file *data){
 		return;
 	}
 	total_seconds = samples / sample_rate;
-	sprintf(result, "%01d:%0d:%05.2f", total_seconds/3600, (total_seconds%3600)/60, samples/sample_rate - (total_seconds%60));
+	sprintf(result, "%01d:%02d:%05.2Lf", total_seconds/3600, (total_seconds%3600)/60, samples/sample_rate - (total_seconds/60)*60);
 
 	return result;
 }
@@ -408,8 +408,6 @@ int process_comm_chunk(char* chunk, sound_file *data){
 	unsigned int num_samples;
 	short int sample_size;
 	sample_rate sample_rate = 0;
-	char *testing = (char*) &sample_rate;
-	int i = 0;
 	get_int_from_memory(chunk, &num_channels, 2);
 	chunk+=2;
 	get_int_from_memory(chunk, &num_samples, 4);
@@ -417,16 +415,9 @@ int process_comm_chunk(char* chunk, sound_file *data){
 	get_int_from_memory(chunk, &sample_size, 2);
 	chunk+=2;
 
-	for(i = 0; i < SAMPLE_RATE_SIZE; i++){
-		*(testing+i) = 0;
-	}
-
 	memcpy(&sample_rate, chunk, SAMPLE_RATE_SIZE);
-	for(i = 2; i < SAMPLE_RATE_SIZE; i++){
-		*(testing + i) <<= 1;
-	}
 	chunk+=10;
-	flip_endian(testing, SAMPLE_RATE_SIZE);
+	flip_endian((char*)&sample_rate, SAMPLE_RATE_SIZE);
 	
 	data->bit_depth=sample_size;
 	data->channels=num_channels;
@@ -782,7 +773,7 @@ void format_output(sound_file *file_data, char* file_name){
 	printf("------------------------------------------------------------\n");
 	printf("Filename: %s\n", file_name);
 	printf("Format: %s\n", file_type_to_string(file_data->type));
-	printf("Sample Rate: %g\n", file_data->sample_rate);
+	printf("Sample Rate: %0Lg\n", file_data->sample_rate);
 	printf("Bit Depth: %d\n", file_data->bit_depth);
 	printf("Channels: %d\n", file_data->channels);
 	printf("Samples: %d\n", file_data->samples);
