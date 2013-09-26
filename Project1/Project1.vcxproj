@@ -77,12 +77,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="shared.c" />
+    <ClCompile Include="gen_helpers.c" />
     <ClCompile Include="sndconv.c" />
     <ClCompile Include="sndinfo.c" />
+    <ClCompile Include="sound_info.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shared.h" />
+    <ClInclude Include="gen_helpers.h" />
+    <ClInclude Include="sound_info.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

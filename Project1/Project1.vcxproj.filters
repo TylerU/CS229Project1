@@ -15,18 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="shared.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sndconv.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sndinfo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gen_helpers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_info.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shared.h">
+    <ClInclude Include="gen_helpers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_info.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
