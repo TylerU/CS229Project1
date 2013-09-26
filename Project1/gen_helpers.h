@@ -1,12 +1,12 @@
 #define DEBUG 0
-#define WINDOWS 1
+#define WINDOWS 0
 
 #define DEFAULT_BUFFER_LENGTH 150
 #define DEFAULT_SAMPLES -1
 #define DEFAULT_BIT_DEPTH -1
 #define DEFAULT_CHANNELS -1
 #define DEFAULT_SAMPLE_RATE -1
-#define SAMPLE_RATE_SIZE 8 
+#define SAMPLE_RATE_SIZE 10
 
 #define return_if_not_OK(X) if(X!=OK) return X;
 #define return_if_falsey(X) if(!X) return X;
@@ -27,7 +27,7 @@ typedef enum {
 	UNABLE_TO_ALLOCATE_MEMORY,
 } error_code;
 
-const char* error_descriptions[];
+const char* error_descriptions[13];
 
 
 typedef enum {
