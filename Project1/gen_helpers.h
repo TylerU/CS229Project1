@@ -1,3 +1,6 @@
+#ifndef GEN_HELPERS_H
+#define GEN_HELPERS_H
+
 #define DEBUG 0
 #define WINDOWS 0
 
@@ -68,3 +71,5 @@ int flip_endian(char *dest, int size);
 int print_readme(char file_name[], FILE* out);
 
 void print_if_error(int err_code, char file_name[]);
+
+#endif

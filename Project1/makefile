@@ -20,20 +20,20 @@ sndconv: gen_helpers.o sound_info.o sound_writing.o sndconv.o
 gen_readme: gen_readme.o gen_helpers.o
 	gcc -o gen_readme gen_readme.o gen_helpers.o
 
-gen_readme.o: gen_readme.c gen_helpers.c gen_helpers.h
+gen_readme.o: gen_readme.c gen_helpers.h
 	gcc -c gen_readme.c
 
 gen_helpers.o: gen_helpers.c gen_helpers.h
 	gcc -c gen_helpers.c
 
-sndconv.o: gen_helpers.h gen_helpers.c sound_info.h sound_info.c sound_writing.c sound_writing.h sndconv.c
+sndconv.o: gen_helpers.h sound_info.h sound_writing.h sndconv.c
 	gcc -c sndconv.c
 
-sndinfo.o: gen_helpers.h gen_helpers.c sound_info.h sound_info.c sndinfo.c
+sndinfo.o: gen_helpers.h sound_info.h sndinfo.c
 	gcc -c sndinfo.c
 
-sound_writing.o: gen_helpers.c gen_helpers.h sound_writing.c sound_writing.h
+sound_writing.o: gen_helpers.h sound_writing.h sound_writing.c
 	gcc -c sound_writing.c
 
-sound_info.o: gen_helpers.c gen_helpers.h sound_info.c sound_info.h
+sound_info.o: gen_helpers.h sound_info.h sound_info.c
 	gcc -c sound_info.c

@@ -1,7 +1,7 @@
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
+#ifndef SOUND_WRITING_H
+#define SOUND_WRITING_H
+
+#include "gen_helpers.h"
 
 int write_229_pre_header(FILE *out);
 
@@ -32,3 +32,5 @@ int write_ssnd_chunk(FILE *out, sound_file *data);
 int write_to_aiff(FILE* out, sound_file *data);
 
 int write_to_cs229(FILE *out, sound_file *data);
+
+#endif

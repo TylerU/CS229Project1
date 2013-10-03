@@ -2,24 +2,29 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
-#ifndef SOUND_INFO
-	#include "sound_info.h"
-	#define SOUND_INFO
-#endif
-
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
-
-#ifndef SOUND_WRITING
-	#include "sound_writing.h"
-	#define SOUND_WRITING
-#endif
+#include "sound_info.h"
+#include "gen_helpers.h"
+#include "sound_writing.h"
 
 
-int main(){
+int sndconv(int argc, char* argv[]){
+	int result;
+	int i;
+
+	int act_like_part1 = 0;
+	int just_print_help = 0;
+	int output_as_aiff = 0;
+	int output_as_cs229 = 0;
+	
+	for(i = 1; i < argc; i++){
+
+	}
+
+	return result;
+}
+
+
+int main(int argc, char* argv[]){
 	int result = 0;
 	FILE *in;
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";

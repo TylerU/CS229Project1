@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
+#include "gen_helpers.h"
 
 sound_file *create_empty_sound_file_data(){
 	sound_file *sound_data = (sound_file *)malloc(sizeof(sound_file));

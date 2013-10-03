@@ -2,17 +2,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
-
-#ifndef SOUND_INFO
-	#include "sound_info.h"
-	#define SOUND_INFO
-#endif
-
+#include "gen_helpers.h"
+#include "sound_info.h"
+				
 void print_dashes(FILE* out){
 	fprintf(out, "------------------------------------------------------------\n");
 }

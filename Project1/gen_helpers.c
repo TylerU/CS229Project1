@@ -2,10 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
+#include "gen_helpers.h"
 
 const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",

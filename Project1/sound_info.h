@@ -1,7 +1,7 @@
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
+#ifndef SOUND_INFO_H
+#define SOUND_INFO_H
+
+#include "gen_helpers.h"
 
 sound_file *create_empty_sound_file_data();
 
@@ -54,3 +54,5 @@ int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data);
 int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_remaining);
 
 int read_aiff_chunks(FILE *in, sound_file *data, unsigned int *bytes_remaining);
+
+#endif

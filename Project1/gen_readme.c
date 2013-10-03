@@ -1,9 +1,5 @@
 #include <stdio.h>
-
-#ifndef GEN_HELPERS
-	#include "gen_helpers.h"
-	#define GEN_HELPERS
-#endif
+#include "gen_helpers.h"
 
 void write_file_to_file(FILE *src, FILE *dest){
 	if(src != NULL && dest != NULL){
