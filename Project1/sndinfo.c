@@ -17,7 +17,7 @@ void format_output(sound_file *file_data, char* file_name){
 	printf("------------------------------------------------------------\n");
 	printf("Filename: %s\n", file_name);
 	printf("Format: %s\n", file_type_to_string(file_data->type));
-	printf("Sample Rate: %0Lg\n", file_data->sample_rate);
+	printf("Sample Rate: %0.0Lf\n", file_data->sample_rate);
 	printf("Bit Depth: %d\n", file_data->bit_depth);
 	printf("Channels: %d\n", file_data->channels);
 	printf("Samples: %d\n", file_data->samples);
@@ -25,11 +25,13 @@ void format_output(sound_file *file_data, char* file_name){
 	printf("------------------------------------------------------------\n");
 }
 
+
 int main(int argc, char* argv[]){
 	int result = 0;
 	FILE *in;
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
-	sound_file *file_data = create_empty_sound_file_data(); 
+	sound_file *file_data = create_empty_sound_file_data();
+
 	if(DEBUG){
 		strcpy(file_name, "hello.aiff");
 	}
@@ -45,7 +47,7 @@ int main(int argc, char* argv[]){
 		fclose(in);
 	}
 	else{
-		fprintf(stderr, "Unable to open file\n");
+		fprintf(stderr, "Unable to open file %s\n", file_name);
 	}
 
 	if(result == OK){
