@@ -11,6 +11,11 @@
 #define return_if_not_OK(X) if(X!=OK) return X;
 #define return_if_falsey(X) if(!X) return X;
 
+#define SNDINFO_README_FILE "sndinfo_readme.txt"
+#define SNDCONV_README_FILE "sndconv_readme.txt"
+#define README_HEADER_FILE "readme_header.txt"
+#define README_FILE "README"
+
 typedef enum {
 	UNEXPECTED_EOF,
 	OK,
@@ -25,9 +30,10 @@ typedef enum {
 	ENCOUNTERED_START_DATA,
 	INVALID_HEADER_VALUE,
 	UNABLE_TO_ALLOCATE_MEMORY,
+	COULDNT_OPEN_FILE
 } error_code;
 
-const char* error_descriptions[13];
+const char* error_descriptions[14];
 
 
 typedef enum {
@@ -58,3 +64,7 @@ int find_string_and_get_following(FILE* in, char *find, char *last);
 int find_string_and_ensure_following_whitespace(FILE *in, char *find);
 
 int flip_endian(char *dest, int size);
+
+int print_readme(char file_name[], FILE* out);
+
+void print_if_error(int err_code, char file_name[]);

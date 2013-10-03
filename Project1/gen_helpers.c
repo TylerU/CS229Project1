@@ -10,7 +10,7 @@
 const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",
 	"Encountered invalid header identifier or beginning of sample data without proper specifier", "Not an error, encountered the beginning of start data",
-	"Invalid header value or unexpected end of file", "Unable to allocate more memory"};
+	"Invalid header value or unexpected end of file", "Unable to allocate more memory", "Couldn't open the given file"};
 
 int flip_endian(char *dest, int size){
 	char* temp = (char*)malloc(size);
@@ -50,5 +50,21 @@ int find_string_and_ensure_following_whitespace(FILE *in, char *find){
 	}
 	else{
 		return result;
+	}
+}
+
+int print_readme(char file_name[], FILE* out){
+	FILE *readme = fopen(file_name, "r");
+	if(readme){
+		char c;
+		while( (c = fgetc(readme)) != EOF ){
+			fputc(c, out);
+		}
+	}
+}
+
+void print_if_error(int err_code, char file_name[]){
+	if(err_code != OK){
+		fprintf(stderr, "Error on file: %s. Error code %d: %s\n", file_name, err_code, error_descriptions[err_code]);
 	}
 }

@@ -13,20 +13,21 @@
 	#define GEN_HELPERS
 #endif
 
+#ifndef SOUND_WRITING
+	#include "sound_writing.h"
+	#define SOUND_WRITING
+#endif
+
 
 int main(){
 	int result = 0;
 	FILE *in;
 	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
 	sound_file *file_data = create_empty_sound_file_data(); 
-	if(DEBUG){
-		strcpy(file_name, "zep.aiff");
-	}
-	else{
-		printf("Enter the pathname of a sound file:\n");
-		fgets(file_name, DEFAULT_BUFFER_LENGTH, stdin);
-		file_name[strlen(file_name)-1]=0;
-	}
+
+	printf("Enter the pathname of a sound file:\n");
+	fgets(file_name, DEFAULT_BUFFER_LENGTH, stdin);
+	file_name[strlen(file_name)-1]=0;
 
 	in = fopen(file_name, "rb");
 	if(in){
@@ -52,6 +53,8 @@ int main(){
 	else{
 		fprintf(stderr, "Error Code %d: %s\n", result, error_descriptions[result]);
 	}
+
+
 	if(WINDOWS){
 		system("pause");
 	}

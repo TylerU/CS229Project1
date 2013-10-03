@@ -1,7 +1,10 @@
 all: sndconv sndinfo
 
+readme: gen_readme README
+	./gen_readme
+
 clean:
-	rm -f gen_helpers.o sndconv.o sndinfo.o sound_info.o sound_writing.o sndconv sndinfo
+	rm -f gen_helpers.o sndconv.o sndinfo.o sound_info.o sound_writing.o gen_readme.o sndconv sndinfo gen_readme
 
 tarball: proj1.tar.gz
 
@@ -13,6 +16,12 @@ sndinfo: gen_helpers.o sound_info.o sndinfo.o
 
 sndconv: gen_helpers.o sound_info.o sound_writing.o sndconv.o
 	gcc -o sndconv gen_helpers.o sound_info.o sound_writing.o sndconv.o
+
+gen_readme: gen_readme.o gen_helpers.o
+	gcc -o gen_readme gen_readme.o gen_helpers.o
+
+gen_readme.o: gen_readme.c gen_helpers.c gen_helpers.h
+	gcc -c gen_readme.c
 
 gen_helpers.o: gen_helpers.c gen_helpers.h
 	gcc -c gen_helpers.c

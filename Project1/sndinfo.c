@@ -13,54 +13,132 @@
 	#define SOUND_INFO
 #endif
 
-void format_output(sound_file *file_data, char* file_name){
-	printf("------------------------------------------------------------\n");
-	printf("Filename: %s\n", file_name);
-	printf("Format: %s\n", file_type_to_string(file_data->type));
-	printf("Sample Rate: %0.0Lf\n", file_data->sample_rate);
-	printf("Bit Depth: %d\n", file_data->bit_depth);
-	printf("Channels: %d\n", file_data->channels);
-	printf("Samples: %d\n", file_data->samples);
-	printf("Duration: %s\n", get_sound_duration_string(file_data));
-	printf("------------------------------------------------------------\n");
+void print_dashes(FILE* out){
+	fprintf(out, "------------------------------------------------------------\n");
 }
 
 
-int main(int argc, char* argv[]){
+void format_output(sound_file *file_data, char* file_name, FILE *out){
+	fprintf(out, "Filename: %s\n", file_name);
+	fprintf(out, "Format: %s\n", file_type_to_string(file_data->type));
+	fprintf(out, "Sample Rate: %0.0Lf\n", file_data->sample_rate);
+	fprintf(out, "Bit Depth: %d\n", file_data->bit_depth);
+	fprintf(out, "Channels: %d\n", file_data->channels);
+	fprintf(out, "Samples: %d\n", file_data->samples);
+	fprintf(out, "Duration: %s\n", get_sound_duration_string(file_data));
+	print_dashes(out);
+}
+
+int prompt_read_and_display_file(FILE* prompt_from, FILE* prompt_to){
 	int result = 0;
-	FILE *in;
-	char file_name[DEFAULT_BUFFER_LENGTH] = "Not Implemented";
+	char file_name[DEFAULT_BUFFER_LENGTH] = "INVALID_FILE_NAME";
+
+	fprintf(prompt_to, "Enter the pathname of a sound file:\n");
+	fgets(file_name, DEFAULT_BUFFER_LENGTH, prompt_from);
+	file_name[strlen(file_name)-1]=0;
+
+	print_dashes(prompt_to);
+
+	result = open_and_read_and_display_file(file_name, prompt_to);
+
+	return result;
+}
+
+int open_and_read_and_display_file(char file_name[], FILE* out){
+	FILE* in = fopen(file_name, "rb");
+	int result;
+	
+	result = read_and_display_file(in, out, file_name);
+
+	return result;
+}
+
+
+
+int read_and_display_file(FILE* in, FILE* out, char file_name[]){
+	int result;
 	sound_file *file_data = create_empty_sound_file_data();
-
-	if(DEBUG){
-		strcpy(file_name, "hello.aiff");
-	}
-	else{
-		printf("Enter the pathname of a sound file:\n");
-		fgets(file_name, DEFAULT_BUFFER_LENGTH, stdin);
-		file_name[strlen(file_name)-1]=0;
-	}
-
-	in = fopen(file_name, "rb");
-	if(in){
+	
+	if(in)
 		result = get_sound_info(in, file_data);
-		fclose(in);
-	}
-	else{
-		fprintf(stderr, "Unable to open file %s\n", file_name);
-	}
-
+	else
+		result = COULDNT_OPEN_FILE;
+	
 	if(result == OK){
-		format_output(file_data, file_name);
+		format_output(file_data, file_name, out);
 	}
 	else{
-		fprintf(stderr, "Error Code %d: %s\n", result, error_descriptions[result]);
+		fprintf(out, "Filename: %s\nUnable to read this sound file. Check stderr for more information\n", file_name);
+	}
+	return result;
+}
+
+int sndinfo(int argc, char* argv[]){
+	int result;
+	int i;
+
+	int just_show_help = 0;
+	int act_like_part1 = 0;
+	int use_stdin = 0;
+	int start_of_files = argc;
+
+	for(i = 1; i < argc; i++){
+		if(argv[i][0] == '-'){
+			switch(argv[i][1]){
+			case 'l':
+				act_like_part1 = 1;
+				break;
+			case 'h':
+				just_show_help = 1;
+				break;
+			default:
+				/* Ignore this parameter */
+				/* Print error?? */
+				break;
+			}
+		}
+		else{
+			start_of_files = i;
+			break;
+		}
 	}
 
+	if(just_show_help){
+		print_readme(SNDINFO_README_FILE, stdout);
+	}
+	else if(act_like_part1){
+		result = prompt_read_and_display_file(stdin, stdout);
+
+		print_if_error(result, "User specified");/*bad, hacky, but it doesn't really matter*/
+	}
+	else if(start_of_files == argc){/* No files specified */
+		print_dashes(stdout);
+		result = read_and_display_file(stdin, stdout, "(standard input)");
+		print_if_error(result, "(standard input)");
+	}
+	else {
+		int i;
+		print_dashes(stdout);
+		for(i = start_of_files; i < argc; i++){
+			char * file_name;
+			file_name = argv[i];
+			result = open_and_read_and_display_file(file_name, stdout);
+			print_if_error(result, file_name);
+		}
+	}
+
+	return result;
+}
+
+
+
+int main(int argc, char* argv[]){
+	int result;
+
+	result = sndinfo(argc, argv);
 
 	if(WINDOWS){
 		system("pause");
 	}
-
 	return result;
 }

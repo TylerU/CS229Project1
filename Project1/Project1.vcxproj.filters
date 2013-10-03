@@ -27,12 +27,24 @@
     <ClCompile Include="sound_info.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sound_writing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_readme.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="print_readme.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gen_helpers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="sound_info.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_writing.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

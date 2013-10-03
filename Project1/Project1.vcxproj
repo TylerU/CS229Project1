@@ -78,13 +78,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gen_helpers.c" />
+    <ClCompile Include="gen_readme.c" />
+    <ClCompile Include="print_readme.c" />
     <ClCompile Include="sndconv.c" />
     <ClCompile Include="sndinfo.c" />
     <ClCompile Include="sound_info.c" />
+    <ClCompile Include="sound_writing.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gen_helpers.h" />
     <ClInclude Include="sound_info.h" />
+    <ClInclude Include="sound_writing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
