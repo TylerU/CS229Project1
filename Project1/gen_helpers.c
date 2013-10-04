@@ -65,3 +65,37 @@ void print_if_error(int err_code, char file_name[]){
 		fprintf(stderr, "Error on file: %s. Error code %d: %s\n", file_name, err_code, error_descriptions[err_code]);
 	}
 }
+
+basic_switches parse_switches(FILE *in, int argc, char* argv[]){
+	basic_switches switches = {0, 0, 0, 0, argc};
+	int i;
+
+	for(i = 1; i < argc; i++){
+		if(argv[i][0] == '-'){
+			switch(argv[i][1]){
+			case 'l':
+				switches.act_like_part1 = 1;
+				break;
+			case 'h':
+				switches.just_show_help = 1;
+				break;
+			case 'c':
+				switches.output_as_cs229 = 1;
+				break;
+			case 'a':
+				switches.output_as_aiff = 1;
+				break;
+			default:
+				/* Ignore this parameter */
+				/* Print error?? */
+				break;
+			}
+		}
+		else{
+			switches.first_non_switch = i;
+			break;
+		}
+	}
+
+	return switches;
+}

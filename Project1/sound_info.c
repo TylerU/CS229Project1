@@ -3,6 +3,17 @@
 #include <string.h>
 #include <ctype.h>
 #include "gen_helpers.h"
+#include "sound_info.h"
+
+void free_sound_file_data(sound_file *data){
+	sample_node *cur_node = data->sample_data_head;
+	while(cur_node){
+		sample_node *next = cur_node->next;
+		free_sample_node(cur_node);
+		cur_node = next;
+	}
+	free(data);
+}
 
 sound_file *create_empty_sound_file_data(){
 	sound_file *sound_data = (sound_file *)malloc(sizeof(sound_file));
@@ -17,6 +28,12 @@ sound_file *create_empty_sound_file_data(){
 	else{
 		return NULL;
 	}
+}
+
+
+void free_sample_node(sample_node *node){
+	free(node->channel_data);
+	free(node);
 }
 
 sample_node *create_sample_node(int channels){

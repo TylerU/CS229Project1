@@ -11,14 +11,16 @@ void print_dashes(FILE* out){
 
 
 void format_output(sound_file *file_data, char* file_name, FILE *out){
+	char *sound_duration = get_sound_duration_string(file_data);
 	fprintf(out, "Filename: %s\n", file_name);
 	fprintf(out, "Format: %s\n", file_type_to_string(file_data->type));
 	fprintf(out, "Sample Rate: %0.0Lf\n", file_data->sample_rate);
 	fprintf(out, "Bit Depth: %d\n", file_data->bit_depth);
 	fprintf(out, "Channels: %d\n", file_data->channels);
 	fprintf(out, "Samples: %d\n", file_data->samples);
-	fprintf(out, "Duration: %s\n", get_sound_duration_string(file_data));
+	fprintf(out, "Duration: %s\n", sound_duration);
 	print_dashes(out);
+	free(sound_duration);
 }
 
 int prompt_read_and_display_file(FILE* prompt_from, FILE* prompt_to){
@@ -62,48 +64,25 @@ int read_and_display_file(FILE* in, FILE* out, char file_name[]){
 	else{
 		fprintf(out, "Filename: %s\nUnable to read this sound file. Check stderr for more information\n", file_name);
 	}
+
+	free_sound_file_data(file_data);
 	return result;
 }
 
 int sndinfo(int argc, char* argv[]){
 	int result;
-	int i;
+	
+	basic_switches switches = parse_switches(stdin, argc, argv);
 
-	int just_show_help = 0;
-	int act_like_part1 = 0;
-	int use_stdin = 0;
-	int start_of_files = argc;
-
-	for(i = 1; i < argc; i++){
-		if(argv[i][0] == '-'){
-			switch(argv[i][1]){
-			case 'l':
-				act_like_part1 = 1;
-				break;
-			case 'h':
-				just_show_help = 1;
-				break;
-			default:
-				/* Ignore this parameter */
-				/* Print error?? */
-				break;
-			}
-		}
-		else{
-			start_of_files = i;
-			break;
-		}
-	}
-
-	if(just_show_help){
+	if(switches.just_show_help){
 		print_readme(SNDINFO_README_FILE, stdout);
 	}
-	else if(act_like_part1){
+	else if(switches.act_like_part1){
 		result = prompt_read_and_display_file(stdin, stdout);
 
 		print_if_error(result, "User specified");/*bad, hacky, but it doesn't really matter*/
 	}
-	else if(start_of_files == argc){/* No files specified */
+	else if(switches.first_non_switch == argc){/* No files specified */
 		print_dashes(stdout);
 		result = read_and_display_file(stdin, stdout, "(standard input)");
 		print_if_error(result, "(standard input)");
@@ -111,7 +90,7 @@ int sndinfo(int argc, char* argv[]){
 	else {
 		int i;
 		print_dashes(stdout);
-		for(i = start_of_files; i < argc; i++){
+		for(i = switches.first_non_switch; i < argc; i++){
 			char * file_name;
 			file_name = argv[i];
 			result = open_and_read_and_display_file(file_name, stdout);

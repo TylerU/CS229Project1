@@ -5,6 +5,10 @@
 
 sound_file *create_empty_sound_file_data();
 
+void free_sound_file_data(sound_file *data);
+
+void free_sample_node(sample_node *node);
+
 sample_node *create_sample_node(int channels);
 
 file_type get_file_type(FILE *in);

@@ -62,6 +62,16 @@ typedef struct {
 	sample_node *sample_data_head;
 } sound_file;
 
+typedef struct{
+	int just_show_help;
+	int act_like_part1;
+	int output_as_aiff;
+	int output_as_cs229;
+	int first_non_switch;
+} basic_switches;
+
+basic_switches parse_switches(FILE *in, int argc, char* argv[]);
+
 int find_string_and_get_following(FILE* in, char *find, char *last);
 
 int find_string_and_ensure_following_whitespace(FILE *in, char *find);
