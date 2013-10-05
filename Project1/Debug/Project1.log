@@ -1,15 +1,18 @@
-﻿Build started 10/3/2013 3:00:25 PM.
-     1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 10/4/2013 9:22:29 PM.
+     1>Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt sndinfo.c
-         sndinfo.c
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(47): warning C4013: 'open_and_read_and_display_file' undefined; assuming extern returning int
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(53): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt sndconv.c
+         sndconv.c
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndconv.c(23): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : see declaration of 'strcat'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndconv.c(26): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(115) : see declaration of 'strcat'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndconv.c(57): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(56): warning C4013: 'read_and_display_file' undefined; assuming extern returning int
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(79): warning C4715: 'read_and_display_file' : not all control paths return a value
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndconv.c(70): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\gen_helpers.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\gen_helpers.obj
          Debug\gen_readme.obj
          Debug\print_readme.obj
          Debug\sndconv.obj
@@ -18,9 +21,9 @@
          Debug\sound_writing.obj
      1>sndconv.obj : error LNK2005: _main already defined in gen_readme.obj
      1>sndinfo.obj : error LNK2005: _main already defined in gen_readme.obj
-     1>C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.exe : fatal error LNK1169: one or more multiply defined symbols found
-     1>Done Building Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" (Build target(s)) -- FAILED.
+     1>C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Debug\Project1.exe : fatal error LNK1169: one or more multiply defined symbols found
+     1>Done Building Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project1\Project1\Project1.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:01.58
+Time Elapsed 00:00:03.18

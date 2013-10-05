@@ -33,10 +33,11 @@ typedef enum {
 	ENCOUNTERED_START_DATA,
 	INVALID_HEADER_VALUE,
 	UNABLE_TO_ALLOCATE_MEMORY,
-	COULDNT_OPEN_FILE
+	COULDNT_OPEN_FILE,
+	INVALID_ARGUMENTS
 } error_code;
 
-const char* error_descriptions[14];
+const char* error_descriptions[15];
 
 
 typedef enum {

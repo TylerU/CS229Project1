@@ -70,7 +70,7 @@ int read_and_display_file(FILE* in, FILE* out, char file_name[]){
 }
 
 int sndinfo(int argc, char* argv[]){
-	int result;
+	int result = OK;
 	
 	basic_switches switches = parse_switches(stdin, argc, argv);
 
@@ -111,5 +111,6 @@ int main(int argc, char* argv[]){
 	if(WINDOWS){
 		system("pause");
 	}
-	return result;
+
+	return result != 1;
 }

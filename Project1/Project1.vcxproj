@@ -80,6 +80,7 @@
     <ClCompile Include="gen_helpers.c" />
     <ClCompile Include="gen_readme.c" />
     <ClCompile Include="print_readme.c" />
+    <ClCompile Include="sndcat.c" />
     <ClCompile Include="sndconv.c" />
     <ClCompile Include="sndinfo.c" />
     <ClCompile Include="sound_info.c" />
