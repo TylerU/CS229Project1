@@ -159,3 +159,16 @@ int write_to_cs229(FILE *out, sound_file *data){
 	write_229_sound_data(out, data);
 	return OK;
 }
+
+int write_to_file_type(FILE* out, sound_file *file_data, file_type type){
+	if(type == AIFF){
+		return write_to_aiff(out, file_data);
+	}
+	else if(type == CS229){
+		return write_to_cs229(out, file_data);
+	}
+	else{
+		return UNRECOGNIZED_FILE_FORMAT;
+	}
+}
+

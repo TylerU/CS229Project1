@@ -26,6 +26,7 @@ Usage: 	make sndinfo (or make)
 Notes:
 	Assumes the given file can be opened successfully. Will print an error if not. 
 	Stores the entire sound sample data in memory. This may crash systems with low RAM and a large sound file. 
+
 ------------------------
 sndconv
 ------------------------
@@ -46,3 +47,7 @@ Notes:
 		SSND offset == 0
 		SSND BlockSize == 0
 	Stores the entire sound sample data in memory. This may crash systems with low RAM and a large sound file. 
+
+-------------
+sndcat
+-------------

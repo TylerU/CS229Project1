@@ -3,11 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "gen_helpers.h"
+#include "sound_info.h"
+#include "sound_writing.h"
 
 const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",
 	"Encountered invalid header identifier or beginning of sample data without proper specifier", "Not an error, encountered the beginning of start data",
-	"Invalid header value or unexpected end of file", "Unable to allocate more memory", "Couldn't open the given file", "Invalid arguments"};
+	"Invalid header value or unexpected end of file", "Unable to allocate more memory", "Couldn't open the given file", "Invalid arguments", 
+	"Unable to concatenate the given files. Ensure that the files have the same number of channels, sample rate, and bit depth"};
 
 int flip_endian(char *dest, int size){
 	char* temp = (char*)malloc(size);
@@ -66,7 +69,7 @@ void print_if_error(int err_code, char file_name[]){
 	}
 }
 
-basic_switches parse_switches(FILE *in, int argc, char* argv[]){
+basic_switches parse_switches(int argc, char* argv[]){
 	basic_switches switches = {0, 0, 0, 0, argc};
 	int i;
 
@@ -98,4 +101,59 @@ basic_switches parse_switches(FILE *in, int argc, char* argv[]){
 	}
 
 	return switches;
+}
+
+file_type get_file_type_restriction_from_switches(basic_switches switches){
+	file_type reqd_out = UNRECOGNIZED;
+	if(switches.output_as_aiff && switches.output_as_cs229){
+		reqd_out = CS229;/*default, I guess*/
+	}
+	else if(switches.output_as_aiff){
+		reqd_out = AIFF;
+	}
+	else if(switches.output_as_cs229){
+		reqd_out = CS229;
+	}
+	else{
+		reqd_out = UNRECOGNIZED;
+	}
+	return reqd_out;
+}
+
+file_type get_opposite_type(file_type type){
+	if(type == AIFF){
+		return CS229;
+	}
+	else if(type == CS229){
+		return AIFF;
+	}
+	else{
+		return UNRECOGNIZED;
+	}
+}
+
+int read_and_write_result_using_stdio(file_type output_restriction){
+	int result = 0;
+	sound_file *file_data = create_empty_sound_file_data(); 
+
+	result = get_sound_info(stdin, file_data);
+
+	if(result == OK){
+		file_type new_type = get_opposite_type(file_data->type);
+		if(output_restriction != UNRECOGNIZED){
+			if(output_restriction == AIFF)
+				new_type = AIFF;
+			else
+				new_type = CS229;
+		}
+
+		result = write_to_file_type(stdout, file_data, new_type);
+	}
+	
+	free_sound_file_data(file_data);
+	return result;
+}
+
+void print_special_error(char err[]){
+	fprintf(stderr, err);
 }

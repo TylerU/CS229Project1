@@ -298,6 +298,7 @@ int get_four_byte_string(FILE *in, char *storage){
 int get_int_from_memory(char *mem, void *dest, int size){
 	memcpy(dest, mem, size);
 	flip_endian((char*)dest, size);
+	return OK;
 }
 
 
@@ -403,6 +404,7 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 		chunk+=actual_block_size;
 		remaining_size-=actual_block_size;
 	}
+	return OK;
 }
 
 int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
@@ -415,6 +417,7 @@ int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
 	else{
 	/*do nothing*/
 	}
+	return OK;
 }
 
 int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_remaining){
@@ -518,4 +521,6 @@ int get_sound_info(FILE* in, sound_file *data){
 	else{
 		return UNRECOGNIZED_FILE_FORMAT;
 	}
+
+	return OK;
 }

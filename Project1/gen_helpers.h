@@ -16,6 +16,11 @@
 
 #define SNDINFO_README_FILE "sndinfo_readme.txt"
 #define SNDCONV_README_FILE "sndconv_readme.txt"
+#define SNDCAT_README_FILE "sndcat_readme.txt"
+#define SNDCUT_README_FILE "sndcut_readme.txt"
+#define SNDSHOW_README_FILE "sndshow_readme.txt"
+#define README_HEADER_FILE "readme_header.txt"
+
 #define README_HEADER_FILE "readme_header.txt"
 #define README_FILE "README"
 
@@ -34,10 +39,11 @@ typedef enum {
 	INVALID_HEADER_VALUE,
 	UNABLE_TO_ALLOCATE_MEMORY,
 	COULDNT_OPEN_FILE,
-	INVALID_ARGUMENTS
+	INVALID_ARGUMENTS,
+	UNABLE_TO_CONCATENATE_FILES,
 } error_code;
 
-const char* error_descriptions[15];
+const char* error_descriptions[16];
 
 
 typedef enum {
@@ -71,7 +77,7 @@ typedef struct{
 	int first_non_switch;
 } basic_switches;
 
-basic_switches parse_switches(FILE *in, int argc, char* argv[]);
+basic_switches parse_switches(int argc, char* argv[]);
 
 int find_string_and_get_following(FILE* in, char *find, char *last);
 
@@ -82,5 +88,13 @@ int flip_endian(char *dest, int size);
 int print_readme(char file_name[], FILE* out);
 
 void print_if_error(int err_code, char file_name[]);
+
+file_type get_file_type_restriction_from_switches(basic_switches switches);
+
+file_type get_opposite_type(file_type type);
+
+int read_and_write_result_using_stdio(file_type output_restriction);
+
+void print_special_error(char err[]);
 
 #endif

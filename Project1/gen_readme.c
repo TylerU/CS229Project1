@@ -15,10 +15,12 @@ void append_file_to_file(char src[], FILE *dest_file){
 	write_file_to_file(source_file, dest_file);
 }
 
-int main(){
-	FILE *readme = fopen(README_FILE, "w");
-	append_file_to_file(README_HEADER_FILE, readme);
-	append_file_to_file(SNDINFO_README_FILE, readme);
-	append_file_to_file(SNDCONV_README_FILE, readme);
-	fclose(readme);
-}
+//int main(){
+//	FILE *readme = fopen(README_FILE, "w");
+//	append_file_to_file(README_HEADER_FILE, readme);
+//	append_file_to_file(SNDINFO_README_FILE, readme);
+//	append_file_to_file(SNDCONV_README_FILE, readme);
+//	append_file_to_file(SNDCAT_README_FILE, readme);
+//	append_file_to_file(SNDCUT_README_FILE, readme);
+//	fclose(readme);
+//}

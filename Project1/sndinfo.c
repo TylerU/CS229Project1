@@ -23,32 +23,6 @@ void format_output(sound_file *file_data, char* file_name, FILE *out){
 	free(sound_duration);
 }
 
-int prompt_read_and_display_file(FILE* prompt_from, FILE* prompt_to){
-	int result = 0;
-	char file_name[DEFAULT_BUFFER_LENGTH] = "INVALID_FILE_NAME";
-
-	fprintf(prompt_to, "Enter the pathname of a sound file:\n");
-	fgets(file_name, DEFAULT_BUFFER_LENGTH, prompt_from);
-	file_name[strlen(file_name)-1]=0;
-
-	print_dashes(prompt_to);
-
-	result = open_and_read_and_display_file(file_name, prompt_to);
-
-	return result;
-}
-
-int open_and_read_and_display_file(char file_name[], FILE* out){
-	FILE* in = fopen(file_name, "rb");
-	int result;
-	
-	result = read_and_display_file(in, out, file_name);
-
-	return result;
-}
-
-
-
 int read_and_display_file(FILE* in, FILE* out, char file_name[]){
 	int result;
 	sound_file *file_data = create_empty_sound_file_data();
@@ -69,10 +43,35 @@ int read_and_display_file(FILE* in, FILE* out, char file_name[]){
 	return result;
 }
 
+int open_and_read_and_display_file(char file_name[], FILE* out){
+	FILE* in = fopen(file_name, "rb");
+	int result;
+	
+	result = read_and_display_file(in, out, file_name);
+
+	return result;
+}
+
+int prompt_read_and_display_file(FILE* prompt_from, FILE* prompt_to){
+	int result = 0;
+	char file_name[DEFAULT_BUFFER_LENGTH] = "INVALID_FILE_NAME";
+
+	fprintf(prompt_to, "Enter the pathname of a sound file:\n");
+	fgets(file_name, DEFAULT_BUFFER_LENGTH, prompt_from);
+	file_name[strlen(file_name)-1]=0;
+
+	print_dashes(prompt_to);
+
+	result = open_and_read_and_display_file(file_name, prompt_to);
+
+	return result;
+}
+
+
 int sndinfo(int argc, char* argv[]){
 	int result = OK;
 	
-	basic_switches switches = parse_switches(stdin, argc, argv);
+	basic_switches switches = parse_switches(argc, argv);
 
 	if(switches.just_show_help){
 		print_readme(SNDINFO_README_FILE, stdout);

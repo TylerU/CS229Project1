@@ -33,4 +33,6 @@ int write_to_aiff(FILE* out, sound_file *data);
 
 int write_to_cs229(FILE *out, sound_file *data);
 
+int write_to_file_type(FILE* out, sound_file *file_data, file_type type);
+
 #endif

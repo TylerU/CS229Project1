@@ -6,17 +6,9 @@
 #include "gen_helpers.h"
 #include "sound_writing.h"
 
-file_type get_opposite_type(file_type type){
-	if(type == AIFF){
-		return CS229;
-	}
-	else if(type == CS229){
-		return AIFF;
-	}
-	else{
-		return UNRECOGNIZED;
-	}
-}
+
+
+
 
 int append_file_type_extension(file_type type, char *file_name){
 	if(type == AIFF){
@@ -31,18 +23,6 @@ int append_file_type_extension(file_type type, char *file_name){
 	return OK;
 }
 
-int write_to_file_type(FILE* out, sound_file *file_data, file_type type){
-	if(type == AIFF){
-		return write_to_aiff(out, file_data);
-	}
-	else if(type == CS229){
-		return write_to_cs229(out, file_data);
-	}
-	else{
-		return UNRECOGNIZED_FILE_FORMAT;
-	}
-	
-}
 
 int act_like_part_1(){
 	int result = 0;
@@ -78,32 +58,10 @@ int act_like_part_1(){
 	return result;
 }
 
-int read_and_write_result_using_stdio(file_type output_restriction){
-	int result = 0;
-	sound_file *file_data = create_empty_sound_file_data(); 
-
-	result = get_sound_info(stdin, file_data);
-
-	if(result == OK){
-		file_type new_type = get_opposite_type(file_data->type);
-		if(output_restriction != UNRECOGNIZED){
-			if(output_restriction == AIFF)
-				new_type = AIFF;
-			else
-				new_type = CS229;
-		}
-
-		result = write_to_file_type(stdout, file_data, new_type);
-	}
-	
-	free_sound_file_data(file_data);
-	return result;
-}
-
 int sndconv(int argc, char* argv[]){
 	int result = OK;
 	
-	basic_switches switches = parse_switches(stdin, argc, argv);
+	basic_switches switches = parse_switches(argc, argv);
 	
 	if(switches.just_show_help){
 		print_readme(SNDCONV_README_FILE, stdout);
@@ -113,19 +71,7 @@ int sndconv(int argc, char* argv[]){
 	}
 	else {
 		/* figure out what output type MUST be */
-		file_type reqd_out = UNRECOGNIZED;
-		if(switches.output_as_aiff && switches.output_as_cs229){
-			result = INVALID_ARGUMENTS;
-		}
-		else if(switches.output_as_aiff){
-			reqd_out = AIFF;
-		}
-		else if(switches.output_as_cs229){
-			reqd_out = CS229;
-		}
-		else{
-			reqd_out = UNRECOGNIZED;
-		}
+		file_type reqd_out = get_file_type_restriction_from_switches(switches);
 
 		if(result == OK){
 			result = read_and_write_result_using_stdio(reqd_out);
