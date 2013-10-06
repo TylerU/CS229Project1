@@ -39,6 +39,9 @@
     <ClCompile Include="sndcat.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sndcut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gen_helpers.h">

@@ -82,6 +82,7 @@
     <ClCompile Include="print_readme.c" />
     <ClCompile Include="sndcat.c" />
     <ClCompile Include="sndconv.c" />
+    <ClCompile Include="sndcut.c" />
     <ClCompile Include="sndinfo.c" />
     <ClCompile Include="sound_info.c" />
     <ClCompile Include="sound_writing.c" />

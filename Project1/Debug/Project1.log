@@ -1,33 +1,17 @@
-﻿Build started 10/5/2013 9:51:24 PM.
+﻿Build started 10/6/2013 1:44:01 AM.
      1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt sndcat.c sound_info.c
-         sound_info.c
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(79): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\string.h(110) : see declaration of 'strcpy'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(80): warning C4033: 'get_sound_duration_string' must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(82): warning C4244: '=' : conversion from 'sample_rate' to 'int', possible loss of data
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(83): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : see declaration of 'sprintf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(163): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(176): warning C4101: 'result' : unreferenced local variable
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(226): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(395): warning C4018: '>=' : signed/unsigned mismatch
-         sndcat.c
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndcat.c(9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
-         Generating Code...
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndcat.c(24): warning C4716: 'init_to_null' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndcat.c(32): warning C4716: 'free_all_file_structs' : must return a value
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sound_info.c(86): warning C4715: 'get_sound_duration_string' : not all control paths return a value
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt sndcut.c
+         sndcut.c
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndcut.c(16): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(311) : see declaration of 'sscanf'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\gen_helpers.obj
          Debug\gen_readme.obj
          Debug\print_readme.obj
          Debug\sndcat.obj
          Debug\sndconv.obj
+         Debug\sndcut.obj
          Debug\sndinfo.obj
          Debug\sound_info.obj
          Debug\sound_writing.obj
@@ -36,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.52
+Time Elapsed 00:00:00.57

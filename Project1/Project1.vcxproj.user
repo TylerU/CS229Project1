@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>-a hello.cs229 hello.cs229</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>&lt; hello.cs229 &gt; hello_missing.cs229 0..13339 2..3 5000..6000</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
