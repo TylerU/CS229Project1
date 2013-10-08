@@ -192,7 +192,7 @@ int print_sound(FILE* out, sound_file *data, sndshow_switches options){
 }
 
 int verify_switches(sndshow_switches switches, sound_file *data){
-	if(switches.output_width < 20 || switches.output_width % 2 != 0){
+	if(switches.output_width < 20 || switches.output_width % 2 != 0){
 		return INVALID_ARGUMENTS;
 	}
 
