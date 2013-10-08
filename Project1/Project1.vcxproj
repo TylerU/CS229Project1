@@ -84,6 +84,7 @@
     <ClCompile Include="sndconv.c" />
     <ClCompile Include="sndcut.c" />
     <ClCompile Include="sndinfo.c" />
+    <ClCompile Include="sndshow.c" />
     <ClCompile Include="sound_info.c" />
     <ClCompile Include="sound_writing.c" />
   </ItemGroup>

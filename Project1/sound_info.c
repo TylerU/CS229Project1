@@ -204,10 +204,6 @@ int read_samples_data(FILE *in, sound_file *data){
 			sound_reading *cur_sample;
 			int i;
 			cur_sample_node = create_sample_node(data->channels);
-			if(last_sample_node)
-				last_sample_node->next = cur_sample_node;
-			else
-				data->sample_data_head = cur_sample_node;
 
 			cur_sample = (cur_sample_node->channel_data);
 
@@ -241,6 +237,10 @@ int read_samples_data(FILE *in, sound_file *data){
 			}
 			else{
 				/*Everything was read correctly*/
+				if(last_sample_node)
+					last_sample_node->next = cur_sample_node;
+				else
+					data->sample_data_head = cur_sample_node;
 			}
 			num_samples++;
 			last_sample_node = cur_sample_node;
@@ -505,14 +505,15 @@ file_type get_file_type(FILE *in){
 
 int get_sound_info(FILE* in, sound_file *data){
 	file_type type = get_file_type(in);
-	 
+	int result = OK;
+
 	if(type != UNRECOGNIZED){
 		data->type = type;
 		if(type == AIFF){
-			read_aiff_file(in, data);
+			result = read_aiff_file(in, data);
 		}
 		else if (type == CS229){
-			read_cs229_file(in, data);
+			result = read_cs229_file(in, data);
 		}
 		else{
 			return UNRECOGNIZED_FILE_FORMAT;
@@ -522,5 +523,5 @@ int get_sound_info(FILE* in, sound_file *data){
 		return UNRECOGNIZED_FILE_FORMAT;
 	}
 
-	return OK;
+	return result;
 }

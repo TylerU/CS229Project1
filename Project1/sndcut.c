@@ -116,6 +116,7 @@ int sndcut(int argc, char *argv[]){
 				result = write_to_file_type(stdout, data, data->type);
 			}
 		}
+		free_sound_file_data(data);
 	}
 
 	print_if_error(result, "");

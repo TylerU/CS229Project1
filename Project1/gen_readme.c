@@ -22,5 +22,6 @@ int main(){
 	append_file_to_file(SNDCONV_README_FILE, readme);
 	append_file_to_file(SNDCAT_README_FILE, readme);
 	append_file_to_file(SNDCUT_README_FILE, readme);
+	append_file_to_file(SNDSHOW_README_FILE, readme);
 	fclose(readme);
 }

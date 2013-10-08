@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>&lt; hello.cs229 &gt; hello_missing.cs229 0..13339 2..3 5000..6000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>&lt; tiny.cs229 -w 32</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

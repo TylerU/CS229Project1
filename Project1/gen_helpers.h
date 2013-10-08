@@ -1,7 +1,7 @@
 #ifndef GEN_HELPERS_H
 #define GEN_HELPERS_H
 
-#define DEBUG 0
+#define DEBUG 1
 #define WINDOWS 0
 
 #define DEFAULT_BUFFER_LENGTH 150

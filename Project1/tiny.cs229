@@ -1,0 +1,11 @@
+CS229
+Channels 3
+BitDepth 8
+SampleRate 1000
+Samples 5
+StartData
+0 -127 127
+10 45 -103
+20 83 -4
+30 0 99
+40 44 45
