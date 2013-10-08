@@ -132,7 +132,7 @@ int sndcat(int argc, char *argv[]){
 	basic_switches switches = parse_switches(argc, argv);
 	
 	if(switches.just_show_help){
-		print_readme(SNDCAT_README_FILE, stdout);
+		print_readme(SNDCAT_README_FILE, stderr);
 		result = OK;
 	}
 	else if(switches.first_non_switch < argc){

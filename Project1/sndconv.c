@@ -64,7 +64,7 @@ int sndconv(int argc, char* argv[]){
 	basic_switches switches = parse_switches(argc, argv);
 	
 	if(switches.just_show_help){
-		print_readme(SNDCONV_README_FILE, stdout);
+		print_readme(SNDCONV_README_FILE, stderr);
 	}
 	else if(switches.act_like_part1){
 		result = act_like_part_1();

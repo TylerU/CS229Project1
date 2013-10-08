@@ -8,8 +8,8 @@ clean:
 
 tarball: proj1.tar.gz
 
-proj1.tar.gz: makefile gen_helpers.c gen_helpers.h sndconv.c sndinfo.c sndcat.c sound_info.c sound_info.h sound_writing.c sound_writing.h gen_readme.c sndcut.c sndshow.c
-	tar -czf proj1.tar.gz makefile README gen_helpers.c gen_helpers.h sndconv.c sndinfo.c sdncat.c sound_info.c sound_info.h  sound_writing.c sound_writing.h gen_readme.c sndcut.c sndshow.c
+proj1.tar.gz: makefile README gen_helpers.c gen_helpers.h gen_readme.c sndconv.c sndinfo.c sndcat.c sound_info.c sound_info.h  sound_writing.c sound_writing.h gen_readme.c sndcut.c sndshow.c readme_header.txt sndcat_readme.txt sndconv_readme.txt sndinfo_readme.txt sndcut_readme.txt sndshow_readme.txt
+	tar -czf proj1.tar.gz makefile README gen_helpers.c gen_helpers.h gen_readme.c sndconv.c sndinfo.c sndcat.c sound_info.c sound_info.h  sound_writing.c sound_writing.h gen_readme.c sndcut.c sndshow.c readme_header.txt sndcat_readme.txt sndconv_readme.txt sndinfo_readme.txt sndcut_readme.txt sndshow_readme.txt
 	
 sndinfo: gen_helpers.o sound_info.o sndinfo.o
 	gcc -o sndinfo gen_helpers.o sound_info.o sound_writing.o sndinfo.o

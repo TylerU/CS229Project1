@@ -192,7 +192,18 @@ int print_sound(FILE* out, sound_file *data, sndshow_switches options){
 }
 
 int verify_switches(sndshow_switches switches, sound_file *data){
-	/*TODO*/
+	if(switches.output_width < 20 || switches.output_width % 2 != 0){
+		return INVALID_ARGUMENTS;
+	}
+
+	if(switches.show_just_this_channel < 1 || switches.show_just_this_channel > data->channels){
+		return INVALID_ARGUMENTS;
+	}
+
+	if(switches.zoom_factor <= 0){
+		return INVALID_ARGUMENTS;
+	}
+
 	return OK;
 }
 
@@ -202,7 +213,7 @@ int sndshow(int argc, char *argv[]){
 
 
 	if(switches.just_show_help){
-		print_readme(SNDSHOW_README_FILE, stdout);
+		print_readme(SNDSHOW_README_FILE, stderr);
 		result = OK;
 	}
 	else {
