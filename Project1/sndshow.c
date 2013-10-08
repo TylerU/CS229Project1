@@ -196,7 +196,7 @@ int verify_switches(sndshow_switches switches, sound_file *data){
 		return INVALID_ARGUMENTS;
 	}
 
-	if(switches.show_just_this_channel < 1 || switches.show_just_this_channel > data->channels){
+	if((switches.show_just_this_channel != SHOW_ALL_CHANNELS && switches.show_just_this_channel < 1) || switches.show_just_this_channel > data->channels){
 		return INVALID_ARGUMENTS;
 	}
 
