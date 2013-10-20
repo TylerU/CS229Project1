@@ -1,10 +1,10 @@
-all: sndconv sndinfo sndcat sndcut sndshow
+all: sndconv sndinfo sndcat sndcut sndshow sndedit
 
-readme: gen_readme readme_header.txt sndcat_readme.txt sndconv_readme.txt sndinfo_readme.txt sndcut_readme.txt sndshow_readme.txt
+readme: gen_readme readme_header.txt sndcat_readme.txt sndconv_readme.txt sndinfo_readme.txt sndcut_readme.txt sndshow_readme.txt sndedit_readme.txt
 	./gen_readme
 
 clean:
-	rm -f gen_helpers.o sndconv.o sndinfo.o sndcat.o sndcut.o sndshow.o sound_info.o sound_writing.o gen_readme.o sndconv sndinfo sndcat sndcut sndshow gen_readme
+	rm -f gen_helpers.o sndconv.o sndinfo.o sndcat.o sndcut.o sndshow.o sndedit.o sound_info.o sound_writing.o gen_readme.o sndconv sndinfo sndcat sndcut sndshow sndedit gen_readme
 
 tarball: proj1.tar.gz
 
@@ -25,6 +25,9 @@ sndcut: gen_helpers.o sound_info.o sound_writing.o sndcut.o
 
 sndshow: gen_helpers.o sound_info.o sound_writing.o sndshow.o 
 	gcc -o sndshow gen_helpers.o sound_info.o sound_writing.o sndshow.o
+
+sndedit: gen_helpers.o sound_info.o sound_writing.o sndshow.o sndedit.o
+	gcc -o sndedit gen_helpers.o sound_info.o sound_writing.o sndedit.o -lncurses
 
 gen_readme: gen_readme.o gen_helpers.o
 	gcc -o gen_readme gen_readme.o gen_helpers.o sound_info.o sound_writing.o
@@ -50,6 +53,9 @@ sndcut.o: gen_helpers.h sound_info.h sound_writing.h sndcut.c
 sndshow.o: gen_helpers.h sound_info.h sndshow.c
 	gcc -c sndshow.c
 
+sndedit.o: gen_helpers.h sound_info.h sound_writing.h sndedit.c
+	gcc -c sndedit.c
+	
 sound_writing.o: gen_helpers.h sound_writing.h sound_writing.c
 	gcc -c sound_writing.c
 

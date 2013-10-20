@@ -23,6 +23,18 @@ int append_file_type_extension(file_type type, char *file_name){
 	return OK;
 }
 
+int get_new_file_name(char file_name[], int n){
+	char *res;
+	printf("Enter the pathname of the other sound file:\n");
+	res = fgets(file_name, n, stdin);
+	if(res){
+		file_name[strlen(file_name)-1] = 0;/* remove that last \n */
+		return OK;
+	}
+	else{
+		return UNEXPECTED_EOF;
+	}
+}
 
 int act_like_part_1(){
 	int result = 0;
@@ -46,7 +58,8 @@ int act_like_part_1(){
 	if(result == OK){
 		FILE *outf;
 		file_type new_type = get_opposite_type(file_data->type);
-		append_file_type_extension(new_type, file_name);
+		result = get_new_file_name(file_name, DEFAULT_BUFFER_LENGTH);
+		return_if_not_OK(result);
 		outf = fopen(file_name , "wb");
 		if(outf && new_type != UNRECOGNIZED)
 			result = write_to_file_type(outf, file_data, new_type);

@@ -10,7 +10,7 @@ const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECO
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",
 	"Encountered invalid header identifier or beginning of sample data without proper specifier", "Not an error, encountered the beginning of start data",
 	"Invalid header value or unexpected end of file", "Unable to allocate more memory", "Couldn't open the given file", "Invalid arguments", 
-	"Unable to concatenate the given files. Ensure that the files have the same number of channels, sample rate, and bit depth"};
+	"Unable to concatenate the given files. Ensure that the files have the same number of channels, sample rate, and bit depth", "Invalid block size specified"};
 
 int flip_endian(char *dest, int size){
 	char* temp = (char*)malloc(size);

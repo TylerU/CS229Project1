@@ -372,6 +372,7 @@ int get_next_sample_from_aiff(sound_file *data, char *chunk, sample_node **new_n
 }
 
 int process_ssnd_chunk(char *chunk, sound_file *data, int size){
+	int result;
 	unsigned int offset = 0;
 	unsigned int block_size = 0;
 	unsigned int min_block_size = data->channels * data->bit_depth/8;
@@ -393,7 +394,8 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 	/*at the beginning of the sample data*/
 	while(remaining_size >= actual_block_size){
 		sample_node *next_node = NULL;
-		get_next_sample_from_aiff(data, chunk, &next_node);
+		result = get_next_sample_from_aiff(data, chunk, &next_node);
+		return_if_not_OK(result);
 		if(last_node != NULL){
 			last_node->next = next_node;
 		}
@@ -408,16 +410,22 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 }
 
 int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
+	int result = OK;
 	if(strcmp(id, "COMM")==0){
 		process_comm_chunk(chunk, data);
+		result = check_for_valid_header_data(data);
+		return_if_not_OK(result);
 	}
 	else if(strcmp(id, "SSND") == 0){
-		process_ssnd_chunk(chunk, data, chunk_size);
+		result = check_for_valid_header_data(data);
+		return_if_not_OK(result);
+		result = process_ssnd_chunk(chunk, data, chunk_size);
+		return_if_not_OK(result);
 	}
 	else{
 	/*do nothing*/
 	}
-	return OK;
+	return result;
 }
 
 int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_remaining){
@@ -438,8 +446,18 @@ int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_rema
 	
 	content_block_size = total_chunk_size - 8;
 	temp = (char*)malloc(content_block_size);
-	fread(temp, 1, content_block_size, in);
-	read_aiff_chunk(id, temp, chunk_size, data);
+	if(!temp){
+		return UNABLE_TO_ALLOCATE_MEMORY;
+	}
+
+	result = fread(temp, 1, content_block_size, in);
+	if(result != content_block_size){
+		return UNEXPECTED_EOF;
+	}
+
+	result = read_aiff_chunk(id, temp, chunk_size, data);
+	return_if_not_OK(result);
+
 	free(temp);
 	*(bytes_remaining) -= total_chunk_size;
 	return OK;

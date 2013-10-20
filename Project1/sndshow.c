@@ -86,61 +86,130 @@ sndshow_switches parse_sndshow_switches(int argc, char* argv[]){
 	return switches;
 }
 
-void print_sample_num_if_necessary(FILE* out, int num_to_print){
+//void print_sample_num_if_necessary(FILE* out, int num_to_print){
+//	if(num_to_print != DONT_PRINT_THIS_SAMPLE_NUM){
+//		fprintf(out, "%9d", num_to_print);
+//	}
+//	else{
+//		fprintf(out, "         ");
+//	}
+//}
+
+void append_spaces(char** out, int num){
+	int i;
+	for(i = 0; i < num; i++){
+		*out[0] = ' ';
+		(*out)++;
+	}
+}
+
+
+void append_sample_num_if_necessary(char **str, int num_to_print){
 	if(num_to_print != DONT_PRINT_THIS_SAMPLE_NUM){
-		fprintf(out, "%9d", num_to_print);
+		sprintf(*str, "%9d", num_to_print);
 	}
 	else{
-		fprintf(out, "         ");
+		sprintf(*str, "         ");
 	}
+	*str += 9;
 }
 
-void print_spaces(FILE* out, int num){
-	int i;
-	for(i = 0; i < num; i++)
-		fprintf(out, " ");
-}
 
-int print_channel(FILE* out, sound_reading channel_val, int num_to_print, int bit_depth, int total_width){
+int get_sound_sample_string(char *str, sound_reading channel_val, int num_to_print, int bit_depth, int total_width){
 	int num_chars_for_each_side = (total_width-12)/2;
 	double block_worth_pos = (double) get_max_value_in_num_bits(bit_depth) / num_chars_for_each_side;
 	double block_worth_neg = (double) get_min_value_in_num_bits(bit_depth) / num_chars_for_each_side;
 
-	print_sample_num_if_necessary(out, num_to_print);
+	append_sample_num_if_necessary(&str, num_to_print);
 
-	fprintf(out, "|");/*begin*/
+	*str = '|';/*begin*/
+	str++;
+
 	if(channel_val < 0){
 		int i;
 		for(i = -(num_chars_for_each_side-1); i <= 0; i++){
 			if(channel_val <= block_worth_neg * -i + block_worth_neg/2.0){
-				fprintf(out, "-");
+				*str = '-';
+				str++;
 			}
 			else{
-				fprintf(out, " ");
+				*str = ' ';
+				str++;
 			}
 		}
 	}
 	else{
-		print_spaces(out, num_chars_for_each_side);
+		append_spaces(&str, num_chars_for_each_side);
 	}
-	fprintf(out, "|");/*mid*/
+	
+	*str = '|';/*mid*/
+	str++;
+	
 	if(channel_val > 0){
 		int i;
 		for(i = 0; i < num_chars_for_each_side; i++){
 			if(channel_val >= block_worth_pos * i + block_worth_pos/2.0){
-				fprintf(out, "-");
+				*str = '-';
+				str++;
 			}
 			else{
-				fprintf(out, " ");
+				*str = ' ';
+				str++;
 			}
 		}
 	}
 	else{
-		print_spaces(out, num_chars_for_each_side);
+		append_spaces(&str, num_chars_for_each_side);
 	}
-	fprintf(out, "|\n");/*end*/
+
+	*str = '|';/*end*/
+	str++; 
+	*str = 0;
+	str++;
+
 	return OK;
 }
+
+//int print_channel(FILE* out, sound_reading channel_val, int num_to_print, int bit_depth, int total_width){
+//	int num_chars_for_each_side = (total_width-12)/2;
+//	double block_worth_pos = (double) get_max_value_in_num_bits(bit_depth) / num_chars_for_each_side;
+//	double block_worth_neg = (double) get_min_value_in_num_bits(bit_depth) / num_chars_for_each_side;
+//
+//	print_sample_num_if_necessary(out, num_to_print);
+//
+//	fprintf(out, "|");/*begin*/
+//	if(channel_val < 0){
+//		int i;
+//		for(i = -(num_chars_for_each_side-1); i <= 0; i++){
+//			if(channel_val <= block_worth_neg * -i + block_worth_neg/2.0){
+//				fprintf(out, "-");
+//			}
+//			else{
+//				fprintf(out, " ");
+//			}
+//		}
+//	}
+//	else{
+//		print_spaces(out, num_chars_for_each_side);
+//	}
+//	fprintf(out, "|");/*mid*/
+//	if(channel_val > 0){
+//		int i;
+//		for(i = 0; i < num_chars_for_each_side; i++){
+//			if(channel_val >= block_worth_pos * i + block_worth_pos/2.0){
+//				fprintf(out, "-");
+//			}
+//			else{
+//				fprintf(out, " ");
+//			}
+//		}
+//	}
+//	else{
+//		print_spaces(out, num_chars_for_each_side);
+//	}
+//	fprintf(out, "|\n");/*end*/
+//	return OK;
+//}
 
 int print_sample(FILE* out, sample_node *sample, int sample_num, sound_file *data, sndshow_switches options){
 	sound_reading *cur = sample->channel_data;
@@ -149,7 +218,10 @@ int print_sample(FILE* out, sample_node *sample, int sample_num, sound_file *dat
 		int print_number = i==0 || options.show_just_this_channel!=SHOW_ALL_CHANNELS;
 		int num_to_print = print_number ? sample_num : DONT_PRINT_THIS_SAMPLE_NUM;
 		if(options.show_just_this_channel == SHOW_ALL_CHANNELS || (i+1) == options.show_just_this_channel){
-			print_channel(out, *(cur+i), num_to_print, data->bit_depth, options.output_width);
+			char *sample_string = (char*) malloc(sizeof(char) * options.output_width + 1);
+			get_sound_sample_string(sample_string, *(cur+i), num_to_print, data->bit_depth, options.output_width);
+			fprintf(out, "%s\n", sample_string);
+			free(sample_string);
 		}
 	}
 	return OK;

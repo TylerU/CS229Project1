@@ -41,9 +41,10 @@ typedef enum {
 	COULDNT_OPEN_FILE,
 	INVALID_ARGUMENTS,
 	UNABLE_TO_CONCATENATE_FILES,
+	INVALID_BLOCK_SIZE,
 } error_code;
 
-const char* error_descriptions[16];
+const char* error_descriptions[17];
 
 
 typedef enum {
