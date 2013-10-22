@@ -20,7 +20,7 @@ int append_file_type_extension(file_type type, char *file_name){
 	else{
 		return UNRECOGNIZED_FILE_FORMAT;
 	}
-	return OK;
+	return GOOD;
 }
 
 int get_new_file_name(char file_name[], int n){
@@ -29,7 +29,7 @@ int get_new_file_name(char file_name[], int n){
 	res = fgets(file_name, n, stdin);
 	if(res){
 		file_name[strlen(file_name)-1] = 0;/* remove that last \n */
-		return OK;
+		return GOOD;
 	}
 	else{
 		return UNEXPECTED_EOF;
@@ -55,11 +55,11 @@ int act_like_part_1(){
 		result = COULDNT_OPEN_FILE;
 	}
 
-	if(result == OK){
+	if(result == GOOD){
 		FILE *outf;
 		file_type new_type = get_opposite_type(file_data->type);
 		result = get_new_file_name(file_name, DEFAULT_BUFFER_LENGTH);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 		outf = fopen(file_name , "wb");
 		if(outf && new_type != UNRECOGNIZED)
 			result = write_to_file_type(outf, file_data, new_type);
@@ -72,7 +72,7 @@ int act_like_part_1(){
 }
 
 int sndconv(int argc, char* argv[]){
-	int result = OK;
+	int result = GOOD;
 	
 	basic_switches switches = parse_switches(argc, argv);
 	
@@ -86,7 +86,7 @@ int sndconv(int argc, char* argv[]){
 		/* figure out what output type MUST be */
 		file_type reqd_out = get_file_type_restriction_from_switches(switches);
 
-		if(result == OK){
+		if(result == GOOD){
 			result = read_and_write_result_using_stdio(reqd_out);
 		}
 	}

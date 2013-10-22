@@ -4,21 +4,8 @@
 
 #include "gen_helpers.h"
 #include "sound_info.h"
+#include "sound_print.h"
 
-#define DEFAULT_SNDSHOW_WIDTH 80
-#define DEFAULT_SNDSHOW_ZOOM 1
-#define SHOW_ALL_CHANNELS 0
-#define DONT_PRINT_THIS_SAMPLE_NUM -1
-#define SAMPLE_NUMBER_WIDTH 9
-
-#define ABS(x) ((x) < 0 ? -(x) : (x))
-
-typedef struct {
-	int just_show_help;
-	int show_just_this_channel;
-	int output_width;
-	int zoom_factor;
-} sndshow_switches;
 
 /*
 	Caution: Returns 0 for failure. Only use for applications in which 0 is not a valid result. 
@@ -28,21 +15,7 @@ int get_int_from_str(char str[]){
 	return result;
 }
 
-int get_max_value_in_num_bits(int n){
-	int result = 1;
-	/*return 2^(n-1) - 1;*/
-	result <<= (n-1);
-	result -= 1;
-	return result;
-}
 
-int get_min_value_in_num_bits(int n){
-	/*return -(2^(n-1));*/
-	int result = 1;
-	result <<= (n-1);
-	result = -result;
-	return result;
-}
 /*copy pasted code. Fix if I have time*/
 sndshow_switches parse_sndshow_switches(int argc, char* argv[]){
 	sndshow_switches switches = {0, SHOW_ALL_CHANNELS, DEFAULT_SNDSHOW_WIDTH, DEFAULT_SNDSHOW_ZOOM};
@@ -86,130 +59,6 @@ sndshow_switches parse_sndshow_switches(int argc, char* argv[]){
 	return switches;
 }
 
-//void print_sample_num_if_necessary(FILE* out, int num_to_print){
-//	if(num_to_print != DONT_PRINT_THIS_SAMPLE_NUM){
-//		fprintf(out, "%9d", num_to_print);
-//	}
-//	else{
-//		fprintf(out, "         ");
-//	}
-//}
-
-void append_spaces(char** out, int num){
-	int i;
-	for(i = 0; i < num; i++){
-		*out[0] = ' ';
-		(*out)++;
-	}
-}
-
-
-void append_sample_num_if_necessary(char **str, int num_to_print){
-	if(num_to_print != DONT_PRINT_THIS_SAMPLE_NUM){
-		sprintf(*str, "%9d", num_to_print);
-	}
-	else{
-		sprintf(*str, "         ");
-	}
-	*str += 9;
-}
-
-
-int get_sound_sample_string(char *str, sound_reading channel_val, int num_to_print, int bit_depth, int total_width){
-	int num_chars_for_each_side = (total_width-12)/2;
-	double block_worth_pos = (double) get_max_value_in_num_bits(bit_depth) / num_chars_for_each_side;
-	double block_worth_neg = (double) get_min_value_in_num_bits(bit_depth) / num_chars_for_each_side;
-
-	append_sample_num_if_necessary(&str, num_to_print);
-
-	*str = '|';/*begin*/
-	str++;
-
-	if(channel_val < 0){
-		int i;
-		for(i = -(num_chars_for_each_side-1); i <= 0; i++){
-			if(channel_val <= block_worth_neg * -i + block_worth_neg/2.0){
-				*str = '-';
-				str++;
-			}
-			else{
-				*str = ' ';
-				str++;
-			}
-		}
-	}
-	else{
-		append_spaces(&str, num_chars_for_each_side);
-	}
-	
-	*str = '|';/*mid*/
-	str++;
-	
-	if(channel_val > 0){
-		int i;
-		for(i = 0; i < num_chars_for_each_side; i++){
-			if(channel_val >= block_worth_pos * i + block_worth_pos/2.0){
-				*str = '-';
-				str++;
-			}
-			else{
-				*str = ' ';
-				str++;
-			}
-		}
-	}
-	else{
-		append_spaces(&str, num_chars_for_each_side);
-	}
-
-	*str = '|';/*end*/
-	str++; 
-	*str = 0;
-	str++;
-
-	return OK;
-}
-
-//int print_channel(FILE* out, sound_reading channel_val, int num_to_print, int bit_depth, int total_width){
-//	int num_chars_for_each_side = (total_width-12)/2;
-//	double block_worth_pos = (double) get_max_value_in_num_bits(bit_depth) / num_chars_for_each_side;
-//	double block_worth_neg = (double) get_min_value_in_num_bits(bit_depth) / num_chars_for_each_side;
-//
-//	print_sample_num_if_necessary(out, num_to_print);
-//
-//	fprintf(out, "|");/*begin*/
-//	if(channel_val < 0){
-//		int i;
-//		for(i = -(num_chars_for_each_side-1); i <= 0; i++){
-//			if(channel_val <= block_worth_neg * -i + block_worth_neg/2.0){
-//				fprintf(out, "-");
-//			}
-//			else{
-//				fprintf(out, " ");
-//			}
-//		}
-//	}
-//	else{
-//		print_spaces(out, num_chars_for_each_side);
-//	}
-//	fprintf(out, "|");/*mid*/
-//	if(channel_val > 0){
-//		int i;
-//		for(i = 0; i < num_chars_for_each_side; i++){
-//			if(channel_val >= block_worth_pos * i + block_worth_pos/2.0){
-//				fprintf(out, "-");
-//			}
-//			else{
-//				fprintf(out, " ");
-//			}
-//		}
-//	}
-//	else{
-//		print_spaces(out, num_chars_for_each_side);
-//	}
-//	fprintf(out, "|\n");/*end*/
-//	return OK;
-//}
 
 int print_sample(FILE* out, sample_node *sample, int sample_num, sound_file *data, sndshow_switches options){
 	sound_reading *cur = sample->channel_data;
@@ -224,7 +73,7 @@ int print_sample(FILE* out, sample_node *sample, int sample_num, sound_file *dat
 			free(sample_string);
 		}
 	}
-	return OK;
+	return GOOD;
 }
 
 /*Creates a node whose channel values are the greatest magnitude between start node and the next size nodes, or until the last node*/
@@ -247,7 +96,7 @@ int create_aggregate_sample(sample_node **start_node, int size, sample_node *new
 		}
 	}
 
-	return OK;
+	return GOOD;
 }
 
 int print_sound(FILE* out, sound_file *data, sndshow_switches options){
@@ -260,7 +109,7 @@ int print_sound(FILE* out, sound_file *data, sndshow_switches options){
 		print_sample(out, to_print, prev_sample_num, data, options);
 		free_sample_node(to_print);
 	}
-	return OK;
+	return GOOD;
 }
 
 int verify_switches(sndshow_switches switches, sound_file *data){
@@ -276,24 +125,24 @@ int verify_switches(sndshow_switches switches, sound_file *data){
 		return INVALID_ARGUMENTS;
 	}
 
-	return OK;
+	return GOOD;
 }
 
 int sndshow(int argc, char *argv[]){
-	int result = OK;
+	int result = GOOD;
 	sndshow_switches switches = parse_sndshow_switches(argc, argv);
 
 
 	if(switches.just_show_help){
 		print_readme(SNDSHOW_README_FILE, stderr);
-		result = OK;
+		result = GOOD;
 	}
 	else {
 		sound_file *data = create_empty_sound_file_data();	
 		result = get_sound_info(stdin, data);
-		if(result == OK){
+		if(result == GOOD){
 			result = verify_switches(switches, data);
-			if(result == OK){
+			if(result == GOOD){
 				result = print_sound(stdout, data, switches);
 			}
 		}

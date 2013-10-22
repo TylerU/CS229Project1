@@ -35,7 +35,7 @@ int read_and_display_file(FILE* in, FILE* out, char file_name[], int print_first
 	else
 		result = COULDNT_OPEN_FILE;
 	
-	if(result == OK){
+	if(result == GOOD){
 		format_output(file_data, file_name, out, print_first_line_dashes);
 	}
 	else{
@@ -71,7 +71,7 @@ int prompt_read_and_display_file(FILE* prompt_from, FILE* prompt_to){
 
 
 int sndinfo(int argc, char* argv[]){
-	int result = OK;
+	int result = GOOD;
 	
 	basic_switches switches = parse_switches(argc, argv);
 

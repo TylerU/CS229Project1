@@ -6,7 +6,7 @@
 #include "sound_info.h"
 #include "sound_writing.h"
 
-const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","OK","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
+const char* error_descriptions[] = {"UNEXPECTED_EOF or Input Error","GOOD","UNRECOGNIZED_FILE_FORMAT","WRONG_NUMBER_OF_SOUND_READINGS","NOT_ENOUGH_SAMPLES",
 	"Empty sample data line or not enough valid channels data", "Invalid or unspecified bit depth", "Invalid or unspecified channels value", "Invalid or unspecified sample rate",
 	"Encountered invalid header identifier or beginning of sample data without proper specifier", "Not an error, encountered the beginning of start data",
 	"Invalid header value or unexpected end of file", "Unable to allocate more memory", "Couldn't open the given file", "Invalid arguments", 
@@ -21,7 +21,7 @@ int flip_endian(char *dest, int size){
 	}
 
 	free(temp);
-	return OK;
+	return GOOD;
 }
 
 int find_string_and_get_following(FILE* in, char *find, char *last){
@@ -32,7 +32,7 @@ int find_string_and_get_following(FILE* in, char *find, char *last){
 	ungetc(c, in);
 	*last = c;
 	if((*find)=='\0'){
-		return OK;
+		return GOOD;
 	}
 	else if (c==EOF){
 		return UNEXPECTED_EOF;
@@ -46,7 +46,7 @@ int find_string_and_ensure_following_whitespace(FILE *in, char *find){
 	char last_char;
 	int result;
 	if((result = find_string_and_get_following(in, find, &last_char)) && isspace(last_char)){
-		return OK;
+		return GOOD;
 	}
 	else{
 		return result;
@@ -64,7 +64,7 @@ int print_readme(char file_name[], FILE* out){
 }
 
 void print_if_error(int err_code, char file_name[]){
-	if(err_code != OK){
+	if(err_code != GOOD){
 		fprintf(stderr, "Error on file: %s. Error code %d: %s\n", file_name, err_code, error_descriptions[err_code]);
 	}
 }
@@ -138,7 +138,7 @@ int read_and_write_result_using_stdio(file_type output_restriction){
 
 	result = get_sound_info(stdin, file_data);
 
-	if(result == OK){
+	if(result == GOOD){
 		file_type new_type = get_opposite_type(file_data->type);
 		if(output_restriction != UNRECOGNIZED){
 			if(output_restriction == AIFF)

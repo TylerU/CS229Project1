@@ -1,5 +1,6 @@
 #ifndef GEN_HELPERS_H
 #define GEN_HELPERS_H
+#include <stdio.h>
 
 #define DEBUG 1
 #define WINDOWS 0
@@ -11,7 +12,7 @@
 #define DEFAULT_SAMPLE_RATE -1
 #define SAMPLE_RATE_SIZE 10
 
-#define return_if_not_OK(X) if(X!=OK) return X;
+#define return_if_not_GOOD(X) if(X!=GOOD) return X;
 #define return_if_falsey(X) if(!X) return X;
 
 #define SNDINFO_README_FILE "sndinfo_readme.txt"
@@ -19,6 +20,7 @@
 #define SNDCAT_README_FILE "sndcat_readme.txt"
 #define SNDCUT_README_FILE "sndcut_readme.txt"
 #define SNDSHOW_README_FILE "sndshow_readme.txt"
+#define SNDEDIT_README_FILE "sndedit_readme.txt"
 #define README_HEADER_FILE "readme_header.txt"
 
 #define README_HEADER_FILE "readme_header.txt"
@@ -26,7 +28,7 @@
 
 typedef enum {
 	UNEXPECTED_EOF,
-	OK,
+	GOOD,
 	UNRECOGNIZED_FILE_FORMAT,
 	WRONG_NUMBER_OF_SOUND_READINGS,
 	NOT_ENOUGH_SAMPLES,

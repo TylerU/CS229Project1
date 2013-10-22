@@ -16,7 +16,7 @@ highlow parse_highlow_arg(char arg[], int *err){
 	result = sscanf(arg, "%d..%d", &range.low, &range.high);
 	
 	if(result == 2)
-		*err = OK;
+		*err = GOOD;
 	else
 		*err = INVALID_ARGUMENTS;
 
@@ -26,13 +26,13 @@ highlow parse_highlow_arg(char arg[], int *err){
 highlow *parse_highlow_args(char *args[], int argc, int *err){
 	int i;
 	highlow *all_ranges = (highlow *)malloc(sizeof(highlow) * argc);
-	*err = OK;
+	*err = GOOD;
 
 	if(all_ranges){
 		for(i = 0; i < argc; i++){
 			int result;
 			*(all_ranges+i) = parse_highlow_arg(args[i], &result);
-			if(result != OK){
+			if(result != GOOD){
 				*err = result;
 			}
 		}
@@ -83,7 +83,7 @@ int strip_samples_in_ranges(sound_file *data, highlow *ranges, int num_ranges){
 		index++;
 	}
 	data->samples = valid_samples;
-	return OK;
+	return GOOD;
 }
 
 int apply_sound_cut(sound_file *data, char *args[], int cuts_start, int cuts_end){
@@ -91,7 +91,7 @@ int apply_sound_cut(sound_file *data, char *args[], int cuts_start, int cuts_end
 	int num_ranges = cuts_end - cuts_start + 1;
 	highlow *ranges = parse_highlow_args(&args[cuts_start], num_ranges, &result); 
 
-	if(result == OK){
+	if(result == GOOD){
 		strip_samples_in_ranges(data, ranges, num_ranges);
 	}
 
@@ -100,19 +100,19 @@ int apply_sound_cut(sound_file *data, char *args[], int cuts_start, int cuts_end
 }
 
 int sndcut(int argc, char *argv[]){
-	int result = OK;
+	int result = GOOD;
 	basic_switches switches = parse_switches(argc, argv);
 	
 	if(switches.just_show_help){
 		print_readme(SNDCUT_README_FILE, stderr);
-		result = OK;
+		result = GOOD;
 	}
 	else {
 		sound_file *data = create_empty_sound_file_data();	
 		result = get_sound_info(stdin, data);
-		if(result == OK){
+		if(result == GOOD){
 			result = apply_sound_cut(data, argv, switches.first_non_switch, argc-1);
-			if(result == OK){
+			if(result == GOOD){
 				result = write_to_file_type(stdout, data, data->type);
 			}
 		}

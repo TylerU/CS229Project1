@@ -83,14 +83,17 @@
     <ClCompile Include="sndcat.c" />
     <ClCompile Include="sndconv.c" />
     <ClCompile Include="sndcut.c" />
+    <ClCompile Include="sndedit.c" />
     <ClCompile Include="sndinfo.c" />
     <ClCompile Include="sndshow.c" />
     <ClCompile Include="sound_info.c" />
+    <ClCompile Include="sound_print.c" />
     <ClCompile Include="sound_writing.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gen_helpers.h" />
     <ClInclude Include="sound_info.h" />
+    <ClInclude Include="sound_print.h" />
     <ClInclude Include="sound_writing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

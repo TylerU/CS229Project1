@@ -45,7 +45,7 @@ int are_files_valid_for_concatenation(sound_file **files, int num_files){
 		}
 	}
 
-	return OK;
+	return GOOD;
 }
 
 sample_node *get_samples_tail(sound_file *file){
@@ -73,26 +73,26 @@ int concat_files_in_first(sound_file **files, int num_files){
 	}
 
 	(*files)->samples = total_samples;
-	return OK;
+	return GOOD;
 }
 
 int read_all_files(char *file_names[], int start, int end, sound_file **datas){
 	int i;
 	for(i = start; i <= end; i++){
-		int result = OK;
+		int result = GOOD;
 		int cur_index = i-start;
 		sound_file **cur_data = (datas+cur_index);
 		*cur_data = create_empty_sound_file_data();
 		result = read_sound_file(file_names[i], *cur_data);
-		if(result != OK){
+		if(result != GOOD){
 			return result;
 		}
 	}
-	return OK;
+	return GOOD;
 }
 
 int read_files_concat_and_print_resulting_file(char *file_names[], int names_start, int names_end, FILE* out, file_type out_type){
-	int result = OK;
+	int result = GOOD;
 	int num_files = names_end + 1 - names_start;
 	sound_file **files_data = (sound_file **)malloc(sizeof(sound_file*) * num_files);
 	if(files_data){
@@ -100,14 +100,14 @@ int read_files_concat_and_print_resulting_file(char *file_names[], int names_sta
 
 		/*read files*/
 		result = read_all_files(file_names, names_start, names_end, files_data);
-		if(result == OK){
+		if(result == GOOD){
 			/*check for errors*/
 			result = are_files_valid_for_concatenation(files_data, num_files);
-			if(result == OK){
+			if(result == GOOD){
 				/*concatenate in first file*/
 				result = concat_files_in_first(files_data, num_files);
 				
-				if(result == OK){
+				if(result == GOOD){
 					/*write to given output*/
 					if(out_type == UNRECOGNIZED){
 						print_special_error("You need to choose an output file type using -a or -c");
@@ -127,13 +127,13 @@ int read_files_concat_and_print_resulting_file(char *file_names[], int names_sta
 }
 
 int sndcat(int argc, char *argv[]){
-	int result = OK;
+	int result = GOOD;
 	
 	basic_switches switches = parse_switches(argc, argv);
 	
 	if(switches.just_show_help){
 		print_readme(SNDCAT_README_FILE, stderr);
-		result = OK;
+		result = GOOD;
 	}
 	else if(switches.first_non_switch < argc){
 		result = read_files_concat_and_print_resulting_file(argv, switches.first_non_switch, argc-1, stdout, get_file_type_restriction_from_switches(switches));

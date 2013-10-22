@@ -23,11 +23,11 @@ sndcat: gen_helpers.o sound_info.o sound_writing.o sndcat.o
 sndcut: gen_helpers.o sound_info.o sound_writing.o sndcut.o
 	gcc -o sndcut gen_helpers.o sound_info.o sound_writing.o sndcut.o
 
-sndshow: gen_helpers.o sound_info.o sound_writing.o sndshow.o 
-	gcc -o sndshow gen_helpers.o sound_info.o sound_writing.o sndshow.o
+sndshow: gen_helpers.o sound_info.o sound_writing.o sound_print.o sndshow.o 
+	gcc -o sndshow gen_helpers.o sound_info.o sound_writing.o sound_print.o sndshow.o
 
-sndedit: gen_helpers.o sound_info.o sound_writing.o sndshow.o sndedit.o
-	gcc -o sndedit gen_helpers.o sound_info.o sound_writing.o sndedit.o -lncurses
+sndedit: gen_helpers.o sound_info.o sound_writing.o sound_print.o sndedit.o
+	gcc -o sndedit gen_helpers.o sound_info.o sound_writing.o sound_print.o sndedit.o -lncurses
 
 gen_readme: gen_readme.o gen_helpers.o
 	gcc -o gen_readme gen_readme.o gen_helpers.o sound_info.o sound_writing.o
@@ -50,10 +50,10 @@ sndcat.o: gen_helpers.h sound_info.h sound_writing.h sndcat.c
 sndcut.o: gen_helpers.h sound_info.h sound_writing.h sndcut.c
 	gcc -c sndcut.c
 	
-sndshow.o: gen_helpers.h sound_info.h sndshow.c
+sndshow.o: gen_helpers.h sound_info.h sound_print.h sndshow.c
 	gcc -c sndshow.c
 
-sndedit.o: gen_helpers.h sound_info.h sound_writing.h sndedit.c
+sndedit.o: gen_helpers.h sound_info.h sound_writing.h sound_print.h sndedit.c
 	gcc -c sndedit.c
 	
 sound_writing.o: gen_helpers.h sound_writing.h sound_writing.c
@@ -62,3 +62,5 @@ sound_writing.o: gen_helpers.h sound_writing.h sound_writing.c
 sound_info.o: gen_helpers.h sound_info.h sound_info.c
 	gcc -c sound_info.c
 
+sound_print.o: gen_helpers.h sound_print.h sound_print.c
+	gcc -c sound_print.c

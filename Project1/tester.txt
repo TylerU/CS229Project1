@@ -1,0 +1,4 @@
+[?1049h[1;24r(B[m[4l[?7h[?1h=[H[2J[1;32Hhello.cs229 (CS229)
+================================================================================[3;62HSample Rate: 22050[4;64HBit Depth: 16[5;65HChannels: 1[6;62HSamples: 13339[7;63HLength: 0:00:00.60[8;61H====================[9;64Hm: mark / unmark[10;64Hc: copy[11;64Hx: cut
+[64G^: insert before[13;64Hv: insert after[14;64Hs: save[15;64Hq: quit[17;63HMovement[18;63Hup/dn
+[63Gpgup/pgdn[20;63Hg: goto sample[22;61H====================[23;65HMarked: 0[24;63HBuffered: 0[13;31H[24;1H[?1049l[?1l>

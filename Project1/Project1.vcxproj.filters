@@ -45,6 +45,12 @@
     <ClCompile Include="sndshow.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sndedit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_print.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gen_helpers.h">
@@ -54,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="sound_writing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_print.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

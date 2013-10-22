@@ -91,7 +91,7 @@ int consume_whitespace(FILE *in){
 	while(isspace(c = fgetc(in))){
 	}
 	ungetc(c, in);
-	return OK;
+	return GOOD;
 }
 
 
@@ -112,7 +112,7 @@ int consume_until_endline(FILE *in){
 
 	for(c = fgetc(in); c != EOF && !is_end_of_line(in, c); c = fgetc(in)){
 	}
-	return OK;
+	return GOOD;
 }
 
 int get_until_whitespace_or_max_len(FILE *in, char buffer[], int max){
@@ -121,11 +121,11 @@ int get_until_whitespace_or_max_len(FILE *in, char buffer[], int max){
 	for(c = fgetc(in); c != EOF && !isspace(c) && cur_pos < max-1; c=fgetc(in), cur_pos++){
 		buffer[cur_pos] = c;
 	}
-	if(isspace(c)){/*in case the caller is looking for whitespace later*/
+	if(isspace(c)){/*in case the caller is loGOODing for whitespace later*/
 		ungetc(c, in);
 	}
 	buffer[cur_pos] = '\0';
-	return OK;
+	return GOOD;
 }
 
 int store_key_val_pair(sound_file *data, char *identifier, int val){
@@ -144,7 +144,7 @@ int store_key_val_pair(sound_file *data, char *identifier, int val){
 	else{/*error*/
 		return INVALID_HEADER_IDENTIFIER;
 	}
-	return OK;
+	return GOOD;
 }
 
 int read_header_key_value_pair(FILE *in, sound_file *data){
@@ -190,7 +190,7 @@ int read_cs229_header(FILE* in, sound_file *data){
 				return result;
 		}
 	}
-	return OK;
+	return GOOD;
 }
 
 int read_samples_data(FILE *in, sound_file *data){
@@ -254,7 +254,7 @@ int read_samples_data(FILE *in, sound_file *data){
 			data->samples = num_samples;
 		}
 	}
-	return OK;
+	return GOOD;
 }
 
 int check_for_valid_header_data(sound_file *data){
@@ -270,7 +270,7 @@ int check_for_valid_header_data(sound_file *data){
 	if(data->type == UNRECOGNIZED)
 		return UNRECOGNIZED_FILE_FORMAT;
 
-	return OK;
+	return GOOD;
 }
 
 
@@ -280,7 +280,7 @@ int get_unsigned_four_byte_int(FILE *in, unsigned int *place){
 	char *dest = (char*)place;
 	int result = fread(dest, size, 1, in);
 	flip_endian(dest, size);
-	return result == 1 ? OK : UNEXPECTED_EOF;
+	return result == 1 ? GOOD : UNEXPECTED_EOF;
 }
 
 int get_four_byte_string(FILE *in, char *storage){
@@ -288,7 +288,7 @@ int get_four_byte_string(FILE *in, char *storage){
 	if(result == 4){
 		*(storage + 4) = '\0';
 
-		return OK;
+		return GOOD;
 	}
 	else{
 		return UNEXPECTED_EOF;
@@ -298,7 +298,7 @@ int get_four_byte_string(FILE *in, char *storage){
 int get_int_from_memory(char *mem, void *dest, int size){
 	memcpy(dest, mem, size);
 	flip_endian((char*)dest, size);
-	return OK;
+	return GOOD;
 }
 
 
@@ -322,7 +322,7 @@ int process_comm_chunk(char* chunk, sound_file *data){
 	data->channels=num_channels;
 	data->samples=num_samples;
 	data->sample_rate=sample_rate;
-	return OK;
+	return GOOD;
 }
 
 int get_next_sample_from_aiff(sound_file *data, char *chunk, sample_node **new_node_return){
@@ -368,7 +368,7 @@ int get_next_sample_from_aiff(sound_file *data, char *chunk, sample_node **new_n
 	}
 
 	*new_node_return = node;
-	return OK;
+	return GOOD;
 }
 
 int process_ssnd_chunk(char *chunk, sound_file *data, int size){
@@ -395,7 +395,7 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 	while(remaining_size >= actual_block_size){
 		sample_node *next_node = NULL;
 		result = get_next_sample_from_aiff(data, chunk, &next_node);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 		if(last_node != NULL){
 			last_node->next = next_node;
 		}
@@ -406,21 +406,21 @@ int process_ssnd_chunk(char *chunk, sound_file *data, int size){
 		chunk+=actual_block_size;
 		remaining_size-=actual_block_size;
 	}
-	return OK;
+	return GOOD;
 }
 
 int read_aiff_chunk(char id[5], char* chunk, int chunk_size, sound_file *data){
-	int result = OK;
+	int result = GOOD;
 	if(strcmp(id, "COMM")==0){
 		process_comm_chunk(chunk, data);
 		result = check_for_valid_header_data(data);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 	}
 	else if(strcmp(id, "SSND") == 0){
 		result = check_for_valid_header_data(data);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 		result = process_ssnd_chunk(chunk, data, chunk_size);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 	}
 	else{
 	/*do nothing*/
@@ -435,9 +435,9 @@ int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_rema
 	char *temp;
 	int content_block_size;
 	int result = get_four_byte_string(in, id);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = get_unsigned_four_byte_int(in, &chunk_size);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 
 	total_chunk_size = chunk_size + 8;
 	if(total_chunk_size % 2 == 1){/*odd*/
@@ -456,35 +456,35 @@ int attempt_read_aiff_chunk(FILE *in, sound_file *data, unsigned int* bytes_rema
 	}
 
 	result = read_aiff_chunk(id, temp, chunk_size, data);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 
 	free(temp);
 	*(bytes_remaining) -= total_chunk_size;
-	return OK;
+	return GOOD;
 }
 
 int read_aiff_chunks(FILE *in, sound_file *data, unsigned int *bytes_remaining){
 	while(*bytes_remaining > 0){/*Super high chance this fails*/
 		int result = attempt_read_aiff_chunk(in, data, bytes_remaining);
-		return_if_not_OK(result);
+		return_if_not_GOOD(result);
 	}
-	return OK;
+	return GOOD;
 }
 
 
 int read_cs229_file(FILE* in, sound_file *data){
 	int result;
 	result = find_string_and_ensure_following_whitespace(in, "CS229");
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = consume_until_endline(in);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = read_cs229_header(in, data);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = check_for_valid_header_data(data);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = read_samples_data(in, data);
-	return_if_not_OK(result);
-	return OK;
+	return_if_not_GOOD(result);
+	return GOOD;
 }
 
 
@@ -493,15 +493,15 @@ int read_aiff_file(FILE* in, sound_file *data){
 	unsigned int bytes_remaining;
 	char temp;
 	result = find_string_and_get_following(in, "FORM", &temp);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = get_unsigned_four_byte_int(in, &bytes_remaining);
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = find_string_and_get_following(in, "AIFF", &temp);
 	bytes_remaining-=4;
-	return_if_not_OK(result);
+	return_if_not_GOOD(result);
 	result = read_aiff_chunks(in, data, &bytes_remaining);
-	return_if_not_OK(result);
-	return OK;
+	return_if_not_GOOD(result);
+	return GOOD;
 }
 
 
@@ -523,7 +523,7 @@ file_type get_file_type(FILE *in){
 
 int get_sound_info(FILE* in, sound_file *data){
 	file_type type = get_file_type(in);
-	int result = OK;
+	int result = GOOD;
 
 	if(type != UNRECOGNIZED){
 		data->type = type;
