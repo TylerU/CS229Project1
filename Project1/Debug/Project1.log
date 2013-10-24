@@ -1,4 +1,4 @@
-﻿Build started 10/21/2013 4:39:53 PM.
+﻿Build started 10/23/2013 9:19:06 PM.
      1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt gen_helpers.c gen_readme.c sndcat.c sndconv.c sndcut.c sndedit.c sndinfo.c sndshow.c sound_info.c sound_print.c sound_writing.c
@@ -26,7 +26,7 @@
      1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndinfo.c(50): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
          sndedit.c
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndedit.c(7): fatal error C1083: Cannot open include file: 'ncurses.h': No such file or directory
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndedit.c(3): fatal error C1083: Cannot open include file: 'ncurses.h': No such file or directory
          sndcut.c
      1>c:\users\tauhl_000\documents\visual studio 2012\projects\project1\project1\sndcut.c(16): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(311) : see declaration of 'sscanf'
@@ -59,4 +59,4 @@
 
 Build FAILED.
 
-Time Elapsed 00:00:01.68
+Time Elapsed 00:00:01.01

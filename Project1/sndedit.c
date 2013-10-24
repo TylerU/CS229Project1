@@ -21,23 +21,14 @@ typedef struct {
 	int default_col;
 	sound_file *data;
 	sample_node *sample_at_top;
-	int cur_sample_number;
 	int top_channel_index;
 	char *file_name;
 	char *header;
 
-	boolean allow_mark;
-	boolean allow_copy;
-	boolean allow_cut;
-	boolean allow_insert;
-	boolean allow_save;
 
 	boolean quit;
-
-	int num_marked;
-	int num_buffered;
+	boolean changes_made;
 } sndedit_state;
-
 
 char *create_sndedit_header(sound_file *data, char *file_name){
 	int len = strlen(file_name) + 40; /*enough room for the file name as well as our junk on the end*/
@@ -52,26 +43,196 @@ sndedit_state create_sndedit_state(sound_file *data, char *file_name){
 	getmaxyx(stdscr, state.total_rows, state.total_cols);
 	state.info_cols = 20;	
 	state.editor_cols = state.total_cols - state.info_cols;
-	state.row = state.total_rows / 2;
 	state.default_col = 9 + (state.editor_cols - 9) / 2;
+	state.row = 2;
 
 	state.data = data;
 	state.file_name = file_name;
 	state.sample_at_top = data->sample_data_head;
-	state.cur_sample_number = 0;
 	state.top_channel_index = 0;
 	state.header = create_sndedit_header(data, file_name);
-	state.allow_mark = true;
-	state.allow_copy = false;
-	state.allow_cut = false;
-	state.allow_insert = false;
-	state.allow_save = false;
-	state.quit = false;
+	state.changes_made = false;
 
-	state.num_marked = 0;
-	state.num_buffered = 0;
+	state.quit = false;
 	return state;
 }
+
+
+int get_sndedit_state_cur_row(sndedit_state *state){
+	return state->row;
+}
+
+int get_sndedit_state_top_sample_number(sndedit_state *state){
+
+}
+
+int get_sndedit_state_top_channel_index(sndedit_state *state){
+
+}
+
+sample_node *get_sndedit_state_sample_at_top(sndedit_state *state){
+
+}
+
+boolean get_sndedit_state_allow_mark(sndedit_state *state){
+	return get_sndedit_state_num_marked(state) < 1;
+}
+
+boolean get_sndedit_state_allow_unmark(sndedit_state *state){
+	return get_sndedit_state_num_marked(state) > 0;
+}
+
+boolean get_sndedit_state_allow_copy(sndedit_state *state){
+	return get_sndedit_state_num_marked(state) > 0;
+}
+
+boolean get_sndedit_state_allow_cut(sndedit_state *state){
+	return get_sndedit_state_num_marked(state) > 0;
+}
+
+boolean get_sndedit_state_allow_insert(sndedit_state *state){
+	return get_sndedit_state_num_buffered(state) > 0;
+}
+
+boolean get_sndedit_state_allow_save(sndedit_state *state){
+	return state->changes_made;
+}
+
+int get_sndedit_state_num_marked(sndedit_state *state){
+
+}
+
+int get_sndedit_state_num_buffered(sndedit_state *state){
+
+}
+
+boolean get_sndedit_state_show_marked(sndedit_state *state){
+	return get_sndedit_state_num_marked(state) > 0;
+}
+
+boolean get_sndedit_state_show_buffered(sndedit_state *state){
+	return get_sndedit_state_num_buffered(state) > 0;
+}
+
+void set_sndedit_state_changed(sndedit_state *state, boolean val){
+	state->changes_made = val;
+}
+
+
+boolean get_sndedit_state_can_move_down(sndedit_state *state){
+	//return get_sndedit_state_top_channel_index(state) < state->data->samples;
+} 
+
+boolean get_sndedit_state_can_move_up(sndedit_state *state){
+	return get_sndedit_state_top_channel_index(state) > 0;
+}
+
+int move_sndedit_state_down(sndedit_state *state){
+	if(get_sndedit_state_can_move_down(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int move_sndedit_state_up(sndedit_state *state){
+	if(get_sndedit_state_can_move_up(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int move_sndedit_state_up_page(sndedit_state *state){
+	if(get_sndedit_state_can_move_up(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int move_sndedit_state_down_page(sndedit_state *state){
+	if(get_sndedit_state_can_move_down(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int initiate_copy(sndedit_state *state){
+	if(get_sndedit_state_allow_copy(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int initiate_cut(sndedit_state *state){
+	if(get_sndedit_state_allow_cut(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int initiate_insert(sndedit_state *state, boolean after){
+	if(get_sndedit_state_allow_insert(state)){
+
+	}
+	else{
+		/* Ignore command */
+	}
+}
+
+int initiate_goto(sndedit_state *state){
+
+}
+
+int attempt_goto_sample_num(sndedit_state *state, int sample){
+
+}
+
+int initiate_mark(sndedit_state *state){
+	if(get_sndedit_state_allow_mark(state)){
+
+	}
+	else if(get_sndedit_state_allow_unmark(state)){
+
+	}
+	else{
+		return INVALID_STATE;
+	}
+}
+
+int save_state(sndedit_state *state){
+	if(get_sndedit_state_allow_save(state)){
+
+	}
+	else{
+		/* Ignore this command */
+	}
+	return GOOD;
+}
+
+int sndedit_quit(sndedit_state *state){
+	state->quit = true;
+	return GOOD;
+}
+
+
+
+
+
+
+
+
+
 
 int init_ncurses(){
 	initscr();
@@ -116,14 +277,16 @@ int print_sidebar(sndedit_state *state){
 	mvprintw(row++, sidebar_start, "Samples: %d\n", state->data->samples);
 	mvprintw(row++, sidebar_start, " Length: %s\n", sound_duration);
 	output_num_chars('=', 20, row++, sidebar_start -1);
-	free(sound_duration);
+	
 
-	print_key_and_description_if_true(row++, sidebar_start, "m", "mark / unmark", state->allow_mark);
-	print_key_and_description_if_true(row++, sidebar_start, "c", "copy", state->allow_copy);
-	print_key_and_description_if_true(row++, sidebar_start, "x", "cut", state->allow_cut);
-	print_key_and_description_if_true(row++, sidebar_start, "^", "insert before", state->allow_insert);
-	print_key_and_description_if_true(row++, sidebar_start, "v", "insert after", state->allow_insert);
-	print_key_and_description_if_true(row++, sidebar_start, "s", "save", state->allow_save);
+	print_key_and_description_if_true(row, sidebar_start, "m", "mark", get_sndedit_state_allow_mark(state));
+	print_key_and_description_if_true(row, sidebar_start, "m", "unmark", get_sndedit_state_allow_unmark(state));
+	row++;
+	print_key_and_description_if_true(row++, sidebar_start, "c", "copy", get_sndedit_state_allow_copy(state));
+	print_key_and_description_if_true(row++, sidebar_start, "x", "cut", get_sndedit_state_allow_cut(state));
+	print_key_and_description_if_true(row++, sidebar_start, "^", "insert before", get_sndedit_state_allow_insert(state));
+	print_key_and_description_if_true(row++, sidebar_start, "v", "insert after", get_sndedit_state_allow_insert(state));
+	print_key_and_description_if_true(row++, sidebar_start, "s", "save", get_sndedit_state_allow_save(state));
 	print_key_and_description_if_true(row++, sidebar_start, "q", "quit", true);
 	row++;
 
@@ -134,14 +297,19 @@ int print_sidebar(sndedit_state *state){
 	row++;
 
 	output_num_chars('=', 20, row++, sidebar_start -1);	
-	mvprintw(row++, sidebar_start, "   Marked: %d", state->num_marked);
-	mvprintw(row++, sidebar_start, " Buffered: %d", state->num_buffered);
+
+	if(get_sndedit_state_show_marked(state))
+		mvprintw(row++, sidebar_start, "   Marked: %d", get_sndedit_state_num_marked(state));
+	if(get_sndedit_state_show_buffered(state))
+		mvprintw(row++, sidebar_start, " Buffered: %d", get_sndedit_state_num_buffered(state));	
+
+	free(sound_duration);
 }
 
 int print_samples(sndedit_state *state){
-	sample_node *cur = state->sample_at_top;
-	int cur_channel_index = state->top_channel_index;
-	int sample_num = state->cur_sample_number;
+	sample_node *cur = get_sndedit_state_sample_at_top(state);
+	int cur_channel_index = get_sndedit_state_top_channel_index(state);
+	int sample_num = get_sndedit_state_top_sample_number(state);
 	int i;
 	for(i = 2; i < state->total_rows; i++){
 		sound_reading sample = cur->channel_data[cur_channel_index];
@@ -170,19 +338,40 @@ int print_main_screen(sndedit_state *state){
 }
 
 int handle_input(sndedit_state *state, int in){
+	int result;
 	switch (in) {
+		case 'm':
+			result = initiate_mark(state);
+			break;
+		case 'c':
+			result = initiate_copy(state);
+			break;
+		case 'x':
+			result = initiate_cut(state);
+			break;
+		case '^':
+			result = initiate_insert(state, false);
+			break;
+		case 'v':
+			result = initiate_insert(state, true);
+			break;
+		case 's':
+			result = save_state(state);
+			break;
 		case 'q': 
-			state->quit = true;
+			result = sndedit_quit(state);
 			break;
 		case KEY_UP:
-			if (state->row>2) state->row--;
+			result = move_sndedit_state_down(state);
 			break;
 		case KEY_DOWN:
-			if (state->row<state->total_rows-1) state->row++;
+			result = move_sndedit_state_up(state);
 			break;
 		case KEY_PPAGE:
+			result = move_sndedit_state_up_page(state);
 			break;
 		case KEY_NPAGE:
+			result = move_sndedit_state_down_page(state)
 			break;
 		default:
 			break;
@@ -221,7 +410,7 @@ int main(int argc, char *argv[])
 
 		while(!state.quit) {
 			print_main_screen(&state);
-			move(state.row, state.default_col);
+			move(get_sndedit_state_cur_row(&state), state.default_col);
 			refresh();
 
 			int c = getch();

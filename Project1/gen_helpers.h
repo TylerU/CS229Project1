@@ -44,6 +44,7 @@ typedef enum {
 	INVALID_ARGUMENTS,
 	UNABLE_TO_CONCATENATE_FILES,
 	INVALID_BLOCK_SIZE,
+	INVALID_STATE,
 } error_code;
 
 const char* error_descriptions[17];
