@@ -47,7 +47,7 @@ typedef enum {
 	INVALID_STATE,
 } error_code;
 
-const char* error_descriptions[17];
+const char* error_descriptions[18];
 
 
 typedef enum {
