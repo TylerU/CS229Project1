@@ -1,2 +1,149 @@
 CS229Project1
 =============
+
+Author:
+Tyler Uhlenkamp
+
+Included:
+All source files (.c, .h)
+This README and associated .txt files for building it and printing help messages.
+A makefile
+	Make commands:
+		make clean
+		make readme
+		make [name of program]
+		make tarball
+
+General notes:
+	These programs are capable of reading ONLY correctly formatted CS229 and AIFF files. If said files contain misformats, a descriptive error message will be sent to stderr. 
+		Supported bit depths: 8, 16, 32 bits
+		Maximum channels: 32
+		Sample rate must be an integer
+	
+	These programs assume the given file(s) can be opened successfully. Will print an error if not. 
+	
+	These programs store the entire sound sample data in memory. This may crash systems with low RAM and a large sound file. 
+
+	All errors are printed to standard error.
+Project #1 Part #2
+
+------------------------
+sndinfo
+------------------------
+Displays useful information about given sound file(s) including sample rate, format, bit depth, channels, samples, and sound duration. 
+
+Usage: $ sndinfo [switches] [file] [file] ...
+	Output is sent to stdout, error info to stderr. 
+	Valid Switches:
+		-h: Display this help screen to standard error, then terminate without reading files.
+		-l: Ignore file arguments. Prompt user for file to read. Display resulting info. 
+	If neither switch is used, sndinfo will read each file and print its information to stdout, separated by a line of dashes.
+		
+
+------------------------
+sndconv
+------------------------
+Converts from a correctly formatted CS229 or AIFF sound file to the opposite type of sound file (or the same type).
+
+By default, uses stdin for file input and stdout for converted file output.
+
+Usage: $ sndconv [switches]
+	Valid Switches:
+		-l: Behave as part 1 and create a new file:
+			Enter the filename of the sound file you would like to read. There is no output after the file name prompt. The program will exit when writing to the new file is complete. 
+			The new file name will be [old file name].[new file extension]
+				eg. "hello.cs229" will become "hello.cs229.aiff" and "hello.txt" formatted as a CS229 file becomes "hello.txt.aiff"
+		-h: Display a short help screen to standard error, then terminate without performing any actions.
+		-a: Output to AIFF no matter what the input format is.
+		-c: Output to CS229 no matter what the input formt is.
+
+Notes:
+	If neither -a or -c switches are specified, the file will be written to the opposite format. If both switches are specified, the program will write to one format or the other (undefined).
+
+	If the resulting file is an AIFF file, the following are assumed true:
+		SSND offset == 0
+		SSND BlockSize == 0
+
+------------------------
+sndcat
+------------------------
+Concatenates all sound files passed in as arguments and writes a single file to standard out. If no files are specified in arguments, stdin is treated as an input file. 
+
+Usage: $ sndcat [switches] [file1] [file2] ...
+	Valid Switches:
+		-h: Display a short help screen to standard error, then terminate without performing any actions.
+		-a: Output to AIFF no matter what the input format is.
+		-c: Output to CS229 no matter what the input formt is.
+		ONE OF THE PREVIOUS 2 SWITCHES MUST BE USED. 
+	Files can be either AIFF or CS229 files.
+	
+Notes:
+	If neither -a or -c switches are specified, the program will throw an error.
+	 If both switches are specified, the program will write to one format or the other (undefined).
+
+------------------------
+sndcut
+------------------------
+Reads a sound file from the standard input stream, then writes the sound file to standard output in the same format after removing all samples specified as arguments. 
+
+Usage: $ sndcut [switches] [low..high] [low..high] ...
+ 	Valid Switches:
+		-h: Display a short help screen to standard error, then terminate without performing any actions.
+	High..low pairs must specify valid sample indices where 0 <= low <= samples in the file - 2 and low <= high <= samples in the file - 1
+	Sample call:
+		$ sndcut 100..1000 4000..5000 < test.cs229 > test1.cs229
+
+------------------------
+sndshow
+------------------------
+Prints an ASCII art representation of a valid sound file read from standard input.
+	Each line is a separate sound reading for a specific channel.
+	The numbered lines mark the beginning of a new sample. 
+	
+Usage: $ sndshow [switches]
+	Valid Switches:
+		-h: Display a short help screen to standard error, then terminate without performing any actions.
+		-c c : Show the output only for channel c, for 1 <= c <= # of channels in sound file.
+		-w w : Specify the total output width, in number of characters. If not specified, the default is w = 80. Note that w must be even so that the number of characters for representing positive values is equal to the number of characters for representing negative values. This program supports values down to w = 20.
+		-z n : Zoom out by a factor of n. If not specified, the default is n = 1. The value to "plot" should be the largest magnitude value over n consecutive samples, and the number of lines of output should decrease by about a factor of n.
+
+------------------------
+sndedit
+------------------------
+Prints an ASCII art representation of a valid sound file and allows interaction with the sound data.
+	Each line is a separate sound reading for a specific channel.
+	The numbered lines mark the beginning of a new sample. 
+	
+Usage: $ sndedit file_name
+	Keyboard commands:
+		Up and Down arrow keys: 
+			Move the selection pointer up or down one exactly sample. 
+		
+		Page up and page down
+			Move the selection pointer up or down one page, roughly. 
+		
+		g:
+			Initiate a goto command. This allows the user to enter a valid sample number which will be immediately jumped to. Just enter a number and press 'enter' 
+			Note: 
+				If an invalid sample number is entered, nothing will happen.
+
+		m:
+			Initiate marking mode. This will beging marking samples at the current sample. All samples between the initially marked sample and the selection cursor will be considered 'marked'. 
+		
+		c:
+			Copy. Copies all the marked samples into a buffer. These samples can later be pasted at any other place in the sound file!
+		
+		x:
+			Cut. Copies all the marked samples into a buffer and removes them from the sound. 
+		
+		^:
+			Paste above. Places all samples in the buffer directly above the selected sample. This command can be repeated multiple times for MAXIMUM FUN.
+
+		v:
+			Paste below. Places all samples in the buffer directly below the selected sample. This command can be repeated multiple times for MAXIMUM FUN.
+
+		s:
+			Save changes. No changes are actually committed to the sound file until this command is executed.
+
+		q: 
+			Quit without saving. 
